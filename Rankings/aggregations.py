@@ -20,7 +20,7 @@ def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_
         A dataframe which has columns:
             player_col, runs_col (summed), runvalue_col (summed), runvalue_avg_col, run_avg_col
     """
-    cols = factor_cols + [player_col, runs_col, dismissed_col]
+    cols = [col_name for col_name, _ in factor_cols] + [player_col, runs_col, dismissed_col]
     df_filtered = df[cols]
     df_filtered[runvalue_col] = df_filtered[runs_col]
 

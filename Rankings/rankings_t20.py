@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 
-
+from constants import config as rankings_config
+from constants_t20 import config as factor_config
 
 
 def standardize_vals(df, col, new_col, min_percentile, max_percentile):
@@ -27,24 +28,27 @@ def batting_rankings(df, runs_col, runs_avg_col):
     new_runs_col = runs_col + new_col_suffix
     new_runs_avg_col = runs_avg_col + new_col_suffix
 
-    df_filtered = df[df[BATTING_INNINGS_PLAYED] >= T20_MIN_NUM_BATTING_INNINGS]
+    df_filtered = df[
+        df[rankings_config["BATTING_INNINGS_PLAYED"]]  # pull the column first
+        >= rankings_config["T20_MIN_NUM_BATTING_INNINGS"]  # then compare
+    ]
 
     # Standardize RunValues
     df_filtered = standardize_vals(
-        df_filtered, runs_col, new_runs_col, T20_RUNS_MIN_PERCENTILE, T20_RUNS_MAX_PERCENTILE)
+        df_filtered, runs_col, new_runs_col, rankings_config["T20_RUNS_MIN_PERCENTILE"], rankings_config["T20_RUNS_MAX_PERCENTILE"])
     
     # Standardize RunValues_AVG
     df_filtered = standardize_vals(
-        df_filtered, runs_avg_col, new_runs_avg_col, T20_RUNS_MIN_PERCENTILE, T20_RUNS_MAX_PERCENTILE)
+        df_filtered, runs_avg_col, new_runs_avg_col, rankings_config["T20_RUNS_MIN_PERCENTILE"], rankings_config["T20_RUNS_MAX_PERCENTILE"])
     
     # Combine.
-    df_filtered[BATTING_COMBINED_SCORE] = (
-        (T20_BATTING_RUNSVALUE_TOTAL_PROP * df_filtered[new_runs_col]) +
-        (T20_BATTING_RUNSVALUE_AVG_PROP * df_filtered[new_runs_avg_col])
+    df_filtered[rankings_config["BATTING_COMBINED_SCORE"]] = (
+        (rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"] * df_filtered[new_runs_col]) +
+        (rankings_config["T20_BATTING_RUNSVALUE_AVG_PROP"] * df_filtered[new_runs_avg_col])
     )
 
-    df_filtered[BATTING_RANKING] = df_filtered[BATTING_COMBINED_SCORE].rank(method='dense', ascending=False)
-    df_filtered = df_filtered.set_index(BATTING_RANKING).sort_index()
+    df_filtered[rankings_config["BATTING_RANKING"]] = df_filtered[rankings_config["BATTING_COMBINED_SCORE"]].rank(method='dense', ascending=False)
+    df_filtered = df_filtered.set_index(rankings_config["BATTING_RANKING"]).sort_index()
     return df_filtered
 
 
@@ -54,22 +58,25 @@ def bowling_rankings(df, wickets_col, wickets_avg_col):
     new_wick_col = wickets_col + new_col_suffix
     new_wick_avg_col = wickets_avg_col + new_col_suffix
 
-    df_filtered = df[df[BOWLING_INNINGS_PLAYED] >= T20_MIN_NUM_BOWLING_INNINGS]
+    df_filtered = df[
+        df[rankings_config["BOWLING_INNINGS_PLAYED"]]  # pull the column first
+        >= rankings_config["T20_MIN_NUM_BOWLING_INNINGS"]  # then compare
+    ]
 
     # Standardize WicketValues
     df_filtered = standardize_vals(
-        df_filtered, wickets_col, new_wick_col, T20_WICKETS_MIN_PERCENTILE, T20_WICKETS_MAX_PERCENTILE)
+        df_filtered, wickets_col, new_wick_col, rankings_config["T20_WICKETS_MIN_PERCENTILE"], rankings_config["T20_WICKETS_MAX_PERCENTILE"])
     
     # Standardize WicketValues_AVG
     df_filtered = standardize_vals(
-        df_filtered, wickets_avg_col, new_wick_avg_col, T20_WICKETS_MIN_PERCENTILE, T20_WICKETS_MAX_PERCENTILE)
+        df_filtered, wickets_avg_col, new_wick_avg_col, rankings_config["T20_WICKETS_MIN_PERCENTILE"], rankings_config["T20_WICKETS_MAX_PERCENTILE"])
     
     # Combine.
-    df_filtered[BOWLING_COMBINED_SCORE] = (
-        (T20_BOWLING_WICKETSVALUE_TOTAL_PROP * df_filtered[new_wick_col]) +
-        (T20_BOWLING_WICKETSVALUE_AVG_PROP * df_filtered[new_wick_avg_col])
+    df_filtered[rankings_config["BOWLING_COMBINED_SCORE"]] = (
+        (rankings_config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"] * df_filtered[new_wick_col]) +
+        (rankings_config["T20_BOWLING_WICKETSVALUE_AVG_PROP"] * df_filtered[new_wick_avg_col])
     )
 
-    df_filtered[BOWLING_RANKING] = df_filtered[BOWLING_COMBINED_SCORE].rank(method='dense', ascending=False)
-    df_filtered = df_filtered.set_index(BOWLING_RANKING).sort_index()
+    df_filtered[rankings_config["BOWLING_RANKING"]] = df_filtered[rankings_config["BOWLING_COMBINED_SCORE"]].rank(method='dense', ascending=False)
+    df_filtered = df_filtered.set_index(rankings_config["BOWLING_RANKING"]).sort_index()
     return df_filtered

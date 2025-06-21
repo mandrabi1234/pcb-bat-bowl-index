@@ -166,6 +166,13 @@ def data_preprocessing(df):
 
     df.loc[df["Tournament"].str.contains("champions t20"), "Tournament"] = "champions t20"
 
+    # df.loc[df["Tournament"].str.contains("t20"), "Tournament"] = "t20"
+    # df.loc[df["Tournament"].str.contains("T20"), "Tournament"] = "t20"
+    # df.loc[df["Tournament"].str.contains("T-20"), "Tournament"] = "t20"
+    # df.loc[df["Tournament"].str.contains("t20"), "Tournament"] = "t20"
+    
+    
+
     df.loc[df["Tournament"].str.contains("psl"), "Tournament"] = "psl"
 
     # Convert Special Bowling Talent Column from YES/NO to 1/0 (also correct some typos)
