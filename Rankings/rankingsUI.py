@@ -110,8 +110,8 @@ tab1, tab2 = st.tabs(["🏏 Batting Rankings", "🎯 Bowling Rankings"])
 
 with st.sidebar:
     st.markdown("### Filter View Names")
-    title_bat = st.text_input("Batting View Title", key="bat_title")
-    title_bowl = st.text_input("Bowling View Title", key="bowl_title")
+    title_bat = st.text_input("Batting View Title", placeholder = "Please Input a Name for Your Batting View", key="bat_title")
+    title_bowl = st.text_input("Bowling View Title", placeholder = "Please Input a Name for Your Bowling View", key="bowl_title")
 
     with st.sidebar.container():
         st.subheader("Batting Factors")
