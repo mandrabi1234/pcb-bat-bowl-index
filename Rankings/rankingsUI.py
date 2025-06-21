@@ -358,7 +358,7 @@ with tab1:
     # Display outputs side by side
     cols = st.columns(min(1 + len(st.session_state.bat_filtered_outputs), 5))
     with cols[0]:
-        st.subheader("Original Batting Data")
+        st.subheader("DefaultData")
         st.dataframe(bat_data)
 
     for i, output in enumerate(st.session_state.bat_filtered_outputs, start=1):
@@ -388,7 +388,7 @@ with tab2:
     # Display outputs side by side
     cols = st.columns(min(1 + len(st.session_state.bowl_filtered_outputs), 5))
     with cols[0]:
-        st.subheader("Original Bowling Data")
+        st.subheader("Default Data")
         st.dataframe(bowl_data)
 
     for i, output in enumerate(st.session_state.bowl_filtered_outputs, start=1):
