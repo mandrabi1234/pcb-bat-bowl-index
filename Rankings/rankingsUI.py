@@ -106,6 +106,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.title("PCB Bat/Bowl Index")
+st.link_button("Quick Reference Guide", "https://docs.google.com/document/d/1G8chnWg9rhQlv-lTN-8BEiKJqfwbVbatPzIj5VKAAR4/edit?usp=sharing")
 tab1, tab2 = st.tabs(["🏏 Batting Rankings", "🎯 Bowling Rankings"])
 
 with st.sidebar:
