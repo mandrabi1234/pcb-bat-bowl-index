@@ -4,6 +4,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Factor Calculations')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Rankings')))
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data')))
 
 from constants import *
 from constants_t20 import *
@@ -25,9 +26,20 @@ config = copy.deepcopy(default_config)
 
 st.set_page_config(layout="wide")
 
+# Set base directory to project root
+BASE_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+
+# Path to the data folder
+DATA_DIR = os.path.join(BASE_DIR, "data")
+
+df_data_input = os.path.join(DATA_DIR, "Filtered PCB Player Data - Final 582025.csv")
+player_map_input = os.path.join(DATA_DIR, "player_mapping.csv")
 # Load data
-batting_data = pd.read_csv(r"C:\Users\mohia\Downloads\Rankings_UI_fully_dynamic_tabbed_downloadable\data\test_t20_rankings_bat_output2025-05-08.csv")
-bowling_data = pd.read_csv(r"C:\Users\mohia\Downloads\Rankings_UI_fully_dynamic_tabbed_downloadable\data\test_t20_rankings_bowl_output2025-05-08.csv")
+bowl_data_input = os.path.join(DATA_DIR,"test_t20_rankings_bowl_output2025-05-08.csv")
+bat_data_input = os.path.join(DATA_DIR,"test_t20_rankings_bat_output2025-05-08.csv")
+
+batting_data = pd.read_csv(fr"{bat_data_input}")
+bowling_data = pd.read_csv(fr"{bowl_data_input}")
 
 bowl_data = pd.DataFrame()
 bowl_data["Player Name"] = bowling_data["Player Name"]
@@ -39,9 +51,8 @@ bat_data["Player Name"] = batting_data["Player Name"]
 bat_data["Player ID "] = batting_data["Player ID"]
 bat_data["Batting Score"] = batting_data["Batting_Combined_Score"]
 
-
-df = pd.read_csv(r"C:\Users\mohia\Downloads\Rankings_UI_fully_dynamic_tabbed_downloadable\data\Filtered PCB Player Data - Final 582025.csv")
-player_mapping = pd.read_csv(r"C:\Users\mohia\Downloads\Rankings_UI_fully_dynamic_tabbed_downloadable\data\player_mapping.csv")
+df = pd.read_csv(fr"{df_data_input}")
+player_mapping = pd.read_csv(fr"{player_map_input}")
 
 data_preprocessing(df)
 
