@@ -133,6 +133,7 @@ def data_preprocessing(df):
     df.loc[df["Special Batting Talent"] == "N/A", "Special Batting Talent"] = np.nan
     df.loc[df["Special Batting Talent"] == "n/a", "Special Batting Talent"] = np.nan
     df.loc[df["Special Batting Talent"] == "n/A", "Special Batting Talent"] = np.nan
+    df.loc[df["Special Batting Talent"] == "NA", "Special Batting Talent"] = np.nan
     df["Special Batting Talent"] = df["Special Batting Talent"].astype(float)
 
 
