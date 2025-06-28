@@ -1,329 +1,379 @@
-﻿Player ID,Player Name
-1,Abrar Ahmed
-2,Haris Rauf
-5,Jahandad Khan
-6,Shamyl Hussain
-7,Yasir Khan
-8,Maaz Sadaqat
-9,Hussain Talat
-10,Taimoor Khan
-11,Ubaid Shah
-12,M Amir Khan
-13,M Ali
-14,Usman Tariq
-15,M Haris Wk
-16,Shoaib Malik
-17,M Mohsin
-18,Tayyab Tahir
-19,Mehran Mumtaz
-20,Zaman Khan
-21,Adil Amin
-22,Tahir Hussain
-23,Umair Afridi
-25,Ahmed Hassan
-28,Nasir Nawaz
-30,Saad Khan
-31,Junaid Ali
-35,Ahmed Safi Abdullah
-37,Ayaz Tassawar
-38,Amir Hassan
-39,Rameez Aziz
-40,Zeeshan Ashraf
-41,M Suleman
-42,Khuram Shahzad
-44,Kashif Ali
-45,Kashif Ali
-46,Aftab Ibrahim
-47,Saqib Khan
-48,Sahibzada Farhan
-49,Muhammad Hurraira
-50,Muhammad Akhlaq
-51,Umar Amin
-52,Saud Shakeel
-53,Sarfaraz Ahmed
-54,Qasim Akram
-55,Asif Ali
-56,Faheem Ashraf
-57,Abbas Afridi
-59,Mir Hamza
-60,Sameen Gull
-62,Noman Ali
-63,Mirza Tahir Baig
-64,Waqar Ahmed
-65,Salman Khan
-66,Tayyab Arif
-67,M Riazullah 
-68,Shahbaz Javed
-69,Ghazi Ghori
-70,Shayan Sheikh
-71,M Rameez Jr.
-72,Ihsanullah
-73,Awais Ali
-74,Salman Irshad
-77,Sharjeel Khan
-78,Abdul Wahid
-81,Haider Ali
-85,Rizwan Mehmood
-87,Umar Saddiq
-88,Saad Baig
-89,Rehan Afrifi
-90,Shadab Khan
-91,Mubasir Khan
-92,Amad Butt
-93,Arafat Minhas
-94,Muhammad Ibtisam
-95,Danish Aziz
-96,M Waseem Jr.
-97,Hassan Ali
-100,Aqib Liaqat
-102,Ali Raza
-103,Usama Mir
-104,Muhammad Umar
-105,Sajid Khan
-106,Irfanullah Shah
-111,Nasir Nawaz
-112,Imam Ul Haq
-114,Kushdil Shah
-115,Shahid Aziz
-116,Afaq Afridi
-118,Sharoon Siraj
-119,Faisal Akram
-120,Aamer Yamin
-121,Muhammad Taha
-122,Omair Bin Yousuf
-123,Muhammad Asghar
-124,Rohail Nazir
-125,Musa Khan
-126,Shahzaid Khan
-127,Sajjad Ali Hashmi
-128,Shahab Khan
-129,Muhammad Awais Zafar
-131,Muhammad Junaid
-132,Zeeshan Malik
-133,Muhammad Awais Anwar
-134,Muhammad Salman
-135,Ahmed Daniyal
-136,Abdullah Shafique
-138,Muhammad Amir Barki
-139,Nizar Ali
-140,Israrullah
-141,Mohammad Imran Jr.
-142,Mohammad Zulkifal
-143,Muhammad Amir Khan
-153,Lateefullah
-154,Usman Khan Shinwari
-155,Shamraiz Khan
-156,Mohammad Javed
-157,Ehsanullah
-158,Bohar Aman
-159,Abdul Hameed
-164,Mohammad Idrees
-165,Najeebullah Achakzai
-171,Bakhtiar Shah
-172,Mohammad Ibrahim Sr.
-173,Hasan Ali
-174,Ayaz Tasawar
-175,Abdul Subhan
-176,Mohsin Riaz
-177,Ahsan Hafeez Bhatti
-178,Afzal Manzoor
-187,Mohammad Raza-Ul-Mustafa
-188,Mohammad Nabeel
-197,Mohammad Faizan
-198,Ali Majid
-199,Hamayun Altaf
-201,Uzair Mumtaz
-203,Waqar Hussain
-204,Waseem Akram Jr.
-205,Muhammad Ismail
-208,Ghulam Raza
-209,Shahzaib Ali
-210,Sarfraz Ali
-211,Aamir Ali
-212,Mohsin Raza
-213,Sabit Ali
-214,Umar Khalid
-215,Imtiaz Legari
-216,Mushtaq Ahmed
-217,Shahzaib Aziz
-218,Bilal Irshad
-219,Mohammad Aqeel
-227,Mohammad Uzair
-228,Abid Ali
-229,Nasir Khan
-230,Mohammad Deen
-231,Aqib Junaid
-232,Mohammad Shahid
-233,Shoaib Ahmed
-234,Abu Huraira
-235,Sajjad Ali
-236,Saleem Mal
-237,Shahbaz Ali
-238,Fahad Hussain
-239,Imran Khan Snr
-240,Arbaz Khan
-241,Aftab Ahmed
-242,Majid Ali
-243,Tariq Jameel
-244,Rasool Bakash
-245,Mohammad Farhad
-246,Zahoor Ahmed
-247,Yasir Hussain
-248,Taimoor Ali
-249,Dawood Khan
-250,Mohammad Farooq
-251,Mohammad Naeem
-252,Maaz Khan
-253,Mohammad Usman
-254,Samiullah Jr.
-255,Usama Ahmed
-256,Azaz Khan
-257,Saeedullah
-258,Asif Afridi
-259,Jamshad Ali
-260,Arshadullah
-261,Awais Akram Minhas
-262,Hassan Raza
-263,Abdul Rehman Muzammil
-264,Usman Salahuddin
-265,Husnain Shamir
-266,Qazi Mehmood Arbqan
-267,Muhammad Haider
-268,Usman Maroof
-269,Saad Asif
-270,Basit Ali
-271,Nadeem Khalil
-272,Rohan Qadri
-273,Mohammad Ammar
-274,Ali Abbas
-275,Shadab Majeed
-276,Raja Farhan Khan
-277,Faizan Saleem
-278,Aqib Liaqat
-279,Naveed Malik
-280,Muhammad Maooz
-281,Najam Naseer Kiyani
-282,Hamad Ismal
-283,Raees Ahmad
-284,Ibtisam Rehman
-285,Atiq Ur Rehman
-286,Mohammad Kashif
-287,Shehzad Gul
-288,Shahid Khan
-289,Abdul Samad
-290,Asad Raza
-291,Mohammad Saleem
-292,Shahid Ali
-293,Ahmad Daniyal
-294,Khurram Shehzad
-295,Mohammad Afzal
-296,Aimal Khan
-297,Hamza
-298,Momin Qamar
-299,Taimoor Sultan
-300,Anu Shahzad
-301,Husnain Majid
-302,Mohammad Sudais
-303,Muhammad Akram
-304,Mohammad Shahyar
-305,Ali Hamza Wasim
-306,Mohammad Faizan Zafar
-307,Ali Shabbir
-308,Mohammad Alamgir
-309,Mohammad Umair
-310,Ali Umer
-311,Mehran Sanwal
-312,Adil Amin 2
-313,Aii Afzal
-314,Shoaib Manzoor
-315,Shayan Khalil
-316,Master Sheet
-317,Muhammad Riazullah
-318,Zain Ishaq
-319,Mehroz Rasheed
-320,Shujah Ur Rehman
-321,Arslan Sajid
-322,Israr Hussain
-323,Muhammad Bilal
-324,Shujah Zaheer
-325,Mohammad Adil
-326,Khayam Khan
-327,Mohammad Arif
-328,Mohammad Arif
-329,Fayyaz Khan
-330,Atizaz Habibkhan
-331,Aqib Khan
-332,Yasir Shah
-333,Arshad Iqbal
-334,Adil Naz
-335,Afaq Ahmed
-336,Naseer Ullah Khan
-337,Ali Imran
-338,Raja Hamza Waheed
-339,Farmanullah
-340,Arsal Sheikh
-341,Hammad Siddique
-342,Umair Riaz
-343,Kaleem Dil
-344,Faizan Riaz
-349,Bahadur Ali
-350,Abdullah Fazal
-352,Jahanzaib Sultan
-353,M.Hamza
-354,Arish Ali Khan
-355,Fahad Amin
-363,Haroon Arshad
-364,S.Zeeshan
-365,Sohail Khan
-366,Khurram Manzoor
-367,Taha Mehmood
-368,Muhammad Umar
-369,Arif Yaqoob
-376,Kamran Afzal
-377,Azeem Dar
-378,Zain Bin Farooq
-379,Ubaid Shah
-380,Saad Nasim
-381,Muhammad Faiq
-382,Hassan Rizwan
-389,Azeem Ghuman
-390,Majid Asghar
-391,Saddam Hussain
-395,Jawad Ali
-396,Kashif Bhatti
-397,Mustafa Nasir
-399,Muhammad Waqar
-401,Noman Ali
-403,Akbar Khan
-404,Saad Khan
-405,Ubaid Ullah
-406,Rizwan Mehmood
-407,Sharjeel Khan
-408,Muhammad Suleman
-411,Fakhar Zaman
-412,Kamran Ghulam
-413,Zain Abbas
-416,Bismillah Khan
-417,Haseebullah
-418,Khawaja Nafay
-419,Muhammad Faizan
-420,Muhammad Shahzad
-422,Israrullah
-423,Sarmad Bhatti
-424,Abdul Samad
-426,Ali Shan
-428,Iftikhar Ahmed
-429,Sarwar Afridi
-430,Muhammad Nawaz
-431,Saad Masood
-432,Ahmed Khan
-433,Imran Randhawa
-434,Bilawal Bhatti
-435,Naseem Shah
-436,Shahnawaz Dahani
-437,Akif Javed
-438,Muhammad Imran Jr.
-441,Nisar Ahmed
-442,Niaz Khan
-443,Zahid Mehmood
-444,Mohammad Rameez Jr.
+Player Name,Player ID
+Abrar Ahmed,1
+Haris Rauf,2
+Shan Masood,3
+Babar Azam,4
+Jahandad Khan,5
+Shamyl Hussain,6
+Yasir Khan,7
+Maaz Sadaqat,8
+Hussain Talat,9
+Taimoor Khan,10
+Ubaid Shah,11
+M. Amir Khan,12
+M. Ali,13
+Usman Tariq,14
+M. Haris,15
+Shoaib Malik,16
+M. Mohsin,17
+Tayyab Tahir,18
+Mehran Mumtaz,19
+Zaman Khan,20
+Adil Amin,21
+Tahir Hussain,22
+Umair Afridi,23
+Ahmed Hassan,24
+Zeeshan Zameer,25
+Naveed Ahmed Khan,26
+Nasir Nawaz,27
+Abdul Fasih,28
+Saad Khan,29
+Junaid Ali,30
+Azam Khan WK,31
+Azam Khan Jr.,32
+Shawaiz Irfan,33
+Ahmed Safi Abdullah,34
+M. Saleem,35
+Ayaz Tasawar,36
+Amir Hassan,37
+Rameez Aziz,38
+Zeeshan Ashraf,39
+M Suleman,40
+Khuram Shahzad,41
+Muhammad Abbas,42
+Kashif Ali,43
+Kashif Ali Jr.,44
+Aftab Ibrahim,45
+Saqib Khan,46
+Sahibzada Farhan,47
+Muhammad Hurraira,48
+Muhammad Akhlaq,49
+Umar Amin,50
+Saud Shakeel,51
+Sarfaraz Ahmed,52
+Qasim Akram,53
+Asif Ali,54
+Faheem Ashraf,55
+Abbas Afridi,56
+Sufiyan Muqeem,57
+Mir Hamza,58
+Sameen Gull,59
+Usman Qadir,60
+Noman Ali,61
+Mirza Tahir Baig,62
+Waqar Ahmad,63
+Salman Khan,64
+Tayyab Arif,65
+M Riaz Ullah,66
+Shahbaz Javed,67
+Ghazi Ghori,68
+Shayan Sheikh,69
+M Rameez Jr.,70
+Ihsanullah,71
+Awais Ali,72
+Salman Irshad,73
+Usman Khan,74
+Saim Ayub,75
+Sharjeel Khan,76
+Abdul Wahid,77
+Rizwan Hussain,78
+Haider Ali,79
+Azan Awais,80
+Imran Rafiq,81
+Yousaf Babar,82
+Rizwan Mehmood,83
+Umar Siddiq,84
+Obaid Shahid,85
+Saad Baig,86
+Rehan Afridi,87
+Shadab Khan,88
+Mubasir Khan,89
+Amad Butt,90
+Arafat Minhas,91
+M Ibtisam,92
+Hassan Nawaz,93
+Imam-Ul-Haq,94
+Khushdil Shah,95
+Shaheen Shah Afridi,96
+Afaq Afridi,97
+Sharoon Siraj,98
+Shahid Aziz,99
+Sirajuddin,100
+Aamer Yamin,101
+Muhammad Taha,102
+Omair Bin Yousuf,103
+Faisal Akram,104
+Rohail Nazir,105
+Shahzaib Khan,106
+Sajjad Ali Hashmi,107
+Shahab Khan,108
+Muhammad Musa Khan,109
+Muhammad Asghar,110
+Muhammad Junaid,111
+Zeeshan Malik,112
+Muhammad Awais Zafar,113
+Abdullah Shafique,114
+Irfan Khan Niazi,115
+Muhammad Salman,116
+Ahmed Daniyal,117
+Muhammad Awais Anwar,118
+Nizar Ali,119
+Mohammad Imran Jr.,120
+Muhammad Amir Barki,121
+Mohammad Zulkifal,122
+Aamer Jamal,123
+Lateefullah,124
+Muhammad Amir Khan,125
+Ubaidullah,126
+Abubakar Khan,127
+Zubair Khan,128
+Sajjad Ibraheem,129
+Mehran Ibrahim,130
+Abuzar Tariq,131
+Azam Khan,132
+Moazzam Umar,133
+Hilal Ahmed,134
+Usman Khan Shinwari,135
+Shamraiz Khan,136
+Mohammad Idrees,137
+Najeebullah Achakzai,138
+Mohammad Javed,139
+Ehsanullah,140
+Bohar Aman,141
+Bakhtiar Shah,142
+Abdul Hameed,143
+Shahbaz Khan,144
+Jalat Khan,145
+Hazrat Wali,146
+Nadeem Ahmed,147
+Gohar Faiz,148
+Kamran Khan,149
+Ikramullah Tareen,150
+Nizamuddin,151
+Mohammad Ibrahim Snr,152
+Hasan Ali,153
+Mohsin Riaz,154
+Afzal Manzoor,155
+Ahsan Hafeez Bhatti,156
+Abdul Subhan,157
+Aashar Mehmood,158
+Abdul Rehman,159
+Mohammad Waleed,160
+Mohammad Raza-Ul-Mustafa,161
+Mohammad Faizan,162
+Ali Majid,163
+Mohammad Nabeel,164
+Shahzaib Bhatti,165
+Fahad Jamil,166
+Shoaib Akhtar Jr.,167
+Hamza Nazar,168
+Salman Aslam,169
+Aqib Shah,170
+Ziad Khan,171
+Abdul Faseeh,172
+Umair Masood,173
+Munir Riaz,174
+Ali Hasnain,175
+Atif Khan,176
+Affan Ishaq,177
+Waseem Akram Jr.,178
+Mohammad Ismail,179
+Ghulam Raza,180
+Hamayun Altaf,181
+Uzair Mumtaz,182
+Shahzaib Ali,183
+Waqar Hussain,184
+Mohsin Raza,185
+Sarfraz Ali,186
+Ahmad Jamal,187
+Mohammad Basit,188
+Huzaifa Ayub,189
+Aamir Ali,190
+Sabit Ali,191
+Shahzaib Aziz,192
+Mushtaq Ahmed,193
+Imtiaz Legari,194
+Bilal Irshad,195
+Umar Khalid,196
+Mohammad Aqeel,197
+Mohammad Uzair,198
+Nasir Khan,199
+Fazal Subhan,200
+Aamir Ali Brohi,201
+Asif Ali Chandio,202
+Ali Haider,203
+Faraz Aziz,204
+Akbar,205
+Umar Waheed,206
+Abid Ali,207
+Fahad Hussain,208
+Mohammad Shahid,209
+Shoaib Ahmed,210
+Majid Ali,211
+Tariq Jamil,212
+Rasool Buksh,213
+Mohammd Deen,214
+Aqib Junaid,215
+Abu Huraira,216
+Sajjad Ali,217
+Saleem Mal,218
+Shahbaz Ali,219
+Imran Khan Sr,220
+Arbaz Khan,221
+Aftab Ahmed,222
+Muhammad Naeem,223
+Mohammad Farooq,224
+Dawood Khan,225
+Muhammad Usman,226
+Maaz Khan,227
+Mohammad Farhad,228
+Zahooer Ahmed,229
+Yasir Hussain,230
+Taimoor Ali,231
+Hassan Raza,232
+Awais Akram Minhas,233
+Samiullah Jr.,234
+Qazi Mehmood Arqban,235
+Asif Afridi,236
+Usman Salahudin,237
+Azaz Khan,238
+Usama Ahmed,239
+Saeedullah,240
+Jamshed Ali,241
+Arshadullah,242
+Abdul Rehman Muzamil,243
+Husnain Shamir,244
+Usman Mahroof,245
+Saad Asif,246
+Muhammad Haider,247
+Nadeem Khalil,248
+Basit Ali,249
+Rohan Qadri,250
+Mohammad Ammar,251
+Ali Abbas,252
+Shadab Majeed,253
+Raja Farhan Khan,254
+Raees Ahmed,255
+Ibtisam Rehman,256
+Faizan Saleem,257
+Naveed Malik,258
+Mohammad Maooz,259
+Najam Naseer Kiyani,260
+Hamad Islam,261
+Atiq Ur Rehman,262
+Daniyal Ahmed,263
+Mohammad Kashif,264
+Shehzad Gul,265
+Khurram Shahzad,266
+Shahid Khan,267
+Asad Raza,268
+Mohammad Saleem,269
+Shahid Ali,270
+Mohammad Afzal,271
+Aimal Khan,272
+Mohammad Faizan Zafar,273
+Taimoor Sultan,274
+Aunshahzad,275
+Mohammad Sudais,276
+Husnain Majid,277
+Mohammad Sheharyar,278
+Momin Qamar,279
+Mohammad Akram,280
+Hammad Hamza,281
+Ali Hamza Wasim,282
+Ali Shabbir,283
+Mohammad Alamgir,284
+Mohammad Umair,285
+Ali Umer,286
+Mehran Sanwal,287
+Ali Afzal,288
+Shoaib Manzoor,289
+Shayan Khalil,290
+Muhammad Riazullah,291
+Zain Ishaq,292
+Mehroz Rasheed,293
+Shujah Ur Rehman,294
+Arsalan Sajid,295
+Israr Hussain,296
+Mohammad Bilal,297
+Khayam Khan,298
+Khalid Usman,299
+Mohammad Arif,300
+Fayyaz Khan,301
+Atizaz Habib Khan,302
+Shujah Zaheer,303
+Mohammad Adil,304
+Naseerullah Khan,305
+Afaq Ahmed,306
+Ali Imran,307
+Raja Hamza Waheed Ogdcl,308
+Arshad Iqbal,309
+Yasir Shah,310
+Aqib Khan,311
+Adil Naz,312
+Farmanullah,313
+Arsal Shaikh,314
+Hammad Siddique,315
+Umair Riaz,316
+Kaleem Dil,317
+Abdullah Fazal,318
+Jahanzaib Sultan,319
+Haroon Arshad,320
+Khurram Manzooz,321
+Saifullah,322
+Mohammad Nadeem,323
+M Hamza,324
+Arish Ali Khan,325
+M Faiq,326
+Saad Naseem,327
+Azeem Ghumman,328
+Kamran Afzal,329
+Azeem Dar,330
+Zain Bin Farooq,331
+Jawad Ali,332
+Hassan Rizwan,333
+Majid Asghar,334
+Saddam Hussain,335
+Ubaid Ullah,336
+Mustafa Nasir,337
+Akbar Khan,338
+Imam-ul-Haq,339
+Omair bin Yousuf,340
+Fakhar Zaman,341
+Kamran Ghulam,342
+Zain Abbas,343
+Bismillah Khan,344
+Imran Dogar,345
+Ali Zaryab,346
+Haseebullah,347
+Khawaja Nafay,348
+M Faizan,349
+Muhammad Shahzad,350
+Israrullah,351
+Sarmad Bhatti,352
+Nabi Gul,353
+Abdul Samad,354
+Muhammad Rizwan,355
+Ali Shan,356
+Salman Ali Agha,357
+Iftikhar Ahmed,358
+Muhammad Nawaz,359
+Sarwar Afridi,360
+Saad Masood,361
+Muhammad Imran,362
+Ahmed Khan,363
+Bilawal Bhatti,364
+Naseem Shah,365
+Shahnawaz Dahani,366
+Akif Javed,367
+Nisar Ahmed,368
+Ali Shafiq,369
+Naqeeb Ullah,370
+Zahid Mehmood,371
+Niaz Khan,372
+Muhammad Rameez,373
+Ali Usman,374
+M Tahir,375
+Fahad Munir,376
+M Nadeem,377
+Raja Hamza Waheed,378

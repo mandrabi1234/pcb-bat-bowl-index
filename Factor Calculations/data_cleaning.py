@@ -60,6 +60,7 @@ def data_preprocessing(df):
 
     # Convert Batters Dimissed to string (since it is comma separated).
     df["Batters Dismissed"] = df["Batters Dismissed"].astype(str)
+    df.loc[df["Batters Dismissed"] == "N0", "Batters Dismissed"] = "0"
     df.loc[df["Batters Dismissed"] == "nan", "Batters Dismissed"] = "0"
 
     # Convert Dimissed Column from YES/NO to 1/0 (also correct some typos)
@@ -114,6 +115,7 @@ def data_preprocessing(df):
     df.loc[df["Special Batting Talent"] == "", "Special Batting Talent"] = 0.0
     df.loc[df["Special Batting Talent"] == "No", "Special Batting Talent"] = 0.0
     df.loc[df["Special Batting Talent"] == "NO", "Special Batting Talent"] = 0.0
+    df.loc[df["Special Batting Talent"] == "N0", "Special Batting Talent"] = 0.0
     df.loc[df["Special Batting Talent"] == "no", "Special Batting Talent"] = 0.0
     df.loc[df["Special Batting Talent"].isna(), "Special Batting Talent"] = 0.0 
     df.loc[df["Special Batting Talent"] == "DNB", "Special Batting Talent"] = np.nan

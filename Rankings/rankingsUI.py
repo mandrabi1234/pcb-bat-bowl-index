@@ -32,7 +32,7 @@ BASE_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file_
 # Path to the data folder
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
-df_data_input = os.path.join(DATA_DIR, "Filtered PCB Player Data - Final 582025.csv")
+df_data_input = os.path.join(DATA_DIR, "PCB Data Collection Template - PCB Data Entry T20.csv")
 player_map_input = os.path.join(DATA_DIR, "player_mapping.csv")
 # Load data
 bowl_data_input = os.path.join(DATA_DIR,"test_t20_rankings_bowl_output2025-05-08.csv")
