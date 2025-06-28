@@ -7,10 +7,10 @@ def data_preprocessing(df):
 
 
     # print(df.columns)
-    df["Wickets Taken"].fillna(0, inplace=True)
+    df["Wickets Taken"] = df["Wickets Taken"].fillna(0)
     df.loc[df["Wickets Taken"] == "*", "Wickets Taken"] = 0
 
-    df["Batters Dismissed"].fillna(0, inplace=True)
+    df["Batters Dismissed"] = df["Batters Dismissed"].fillna(0)
     df.loc[df["Batters Dismissed"] == "*", "Batters Dismissed"] = 0
     df.loc[df["Batters Dismissed"] == "N/a", "Batters Dismissed"] = 0
     df.loc[df["Batters Dismissed"] == "", "Batters Dismissed"] = np.nan
