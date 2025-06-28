@@ -35,8 +35,8 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 df_data_input = os.path.join(DATA_DIR, "PCB Data Collection Template - PCB Data Entry T20.csv")
 player_map_input = os.path.join(DATA_DIR, "player_mapping.csv")
 # Load data
-bowl_data_input = os.path.join(DATA_DIR,"test_t20_rankings_bowl_output2025-05-08.csv")
-bat_data_input = os.path.join(DATA_DIR,"test_t20_rankings_bat_output2025-05-08.csv")
+bowl_data_input = os.path.join(DATA_DIR,"test_t20_rankings_bowl_output2025-06-27.csv")
+bat_data_input = os.path.join(DATA_DIR,"test_t20_rankings_bat_output2025-06-27.csv")
 
 batting_data = pd.read_csv(fr"{bat_data_input}")
 bowling_data = pd.read_csv(fr"{bowl_data_input}")
