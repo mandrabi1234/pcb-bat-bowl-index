@@ -45,11 +45,13 @@ bowl_data = pd.DataFrame()
 bowl_data["Player Name"] = bowling_data["Player Name"]
 bowl_data["Player ID "] = bowling_data["Player ID"]
 bowl_data["Bowling Score"] = bowling_data["Bowling_Combined_Score"]
+bowl_data["Wickets Taken"] = bowling_data["Wickets Taken"]
 
 bat_data = pd.DataFrame()
 bat_data["Player Name"] = batting_data["Player Name"]
 bat_data["Player ID "] = batting_data["Player ID"]
 bat_data["Batting Score"] = batting_data["Batting_Combined_Score"]
+bat_data["Runs Made"] = batting_data["Runs Made"]
 
 df = pd.read_csv(fr"{df_data_input}")
 player_mapping = pd.read_csv(fr"{player_map_input}")
