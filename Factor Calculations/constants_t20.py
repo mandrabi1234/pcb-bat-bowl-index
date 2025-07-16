@@ -7,7 +7,7 @@ config = {
     "FACTOR_BAT_POSITION": "Factor_Batting_Position",
     "FACTOR_SPECIAL_BAT_TALENT": "Factor_Special_Batting_Talent",
     "FACTOR_SPECIAL_BOWL_TALENT": "Factor_Special_Bowling_Talent",
-    "FACTOR_WICKETS_BATTER_POS_DISMISSED": "Factor_Wickets_Batter_Pos_Dimissed",
+    "FACTOR_WICKETS_BATTER_POS_DISMISSED": "Factor_Wickets_Batter_Pos_Dismissed",
     "FACTOR_ECON_RATE": "Factor_Wickets_Economy_rate",
 
     # Strike Rate Scaling Constants

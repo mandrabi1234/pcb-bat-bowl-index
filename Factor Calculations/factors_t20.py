@@ -88,16 +88,16 @@ def special_bowl_talent_factor(df, special_bowl_talent_col_name, special_bowl_ta
 
 
 # Compute factor for position of batters dismissed.
-def batters_dismissed_position_factor(df, wickets_taken_col, batter_pos_col, batter_pos_dimissed_factor_col):
+def batters_dismissed_position_factor(df, wickets_taken_col, batter_pos_col, batter_pos_dismissed_factor_col):
 
     # Create a default column for Batters Dismissed Factor
-    df[batter_pos_dimissed_factor_col] = t20["WICKET_BAT_POS_DEFAULT"] 
+    df[batter_pos_dismissed_factor_col] = t20["WICKET_BAT_POS_DEFAULT"] 
 
     # Apply factors based on batting position
-    df[batter_pos_dimissed_factor_col] = np.where(
+    df[batter_pos_dismissed_factor_col] = np.where(
         df[wickets_taken_col] > 0,
         df[batter_pos_col].apply(
-            lambda x: sum(t20["WICKET_BAT_POS_FACTOR_DICT"][int(i)] for i in x.split(','))
+            lambda x: sum(t20["WICKET_BAT_POS_FACTOR_DICT"][int(float(i))] for i in x.split(','))
             )/df[wickets_taken_col],
         t20["WICKET_BAT_POS_DEFAULT"]
     )

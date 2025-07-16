@@ -32,11 +32,26 @@ BASE_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file_
 # Path to the data folder
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
-df_data_input = os.path.join(DATA_DIR, "Fully_Updated_PCB_Data_Collection_Template.csv")
-player_map_input = os.path.join(DATA_DIR, "player_mapping.csv")
+# Paste your own link here
+spreadsheet_id = "18geKjHMU0ezmNvWDpngo8WWYNyumUJu2upTOblPEmHM"
+gids = ["297170317", "947794568", "570966830"]
+
+dfs = []
+for i in range(len(gids)):
+    csv_url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=csv&gid={gids[i]}"
+    df = pd.read_csv(csv_url)
+    dfs.append(df)
+
+df = pd.concat(dfs, ignore_index=True)
+
+df.to_csv = ("outputData.csv")
+mapping_url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=csv&gid=1945069261"
+
+player_mapping = pd.read_csv(mapping_url)
+
 # Load data
-bowl_data_input = os.path.join(DATA_DIR,"test_t20_rankings_bowl_output2025-06-27.csv")
-bat_data_input = os.path.join(DATA_DIR,"test_t20_rankings_bat_output2025-06-27.csv")
+bowl_data_input = os.path.join(DATA_DIR,"bowl_data.csv")
+bat_data_input = os.path.join(DATA_DIR,"bat_data.csv")
 
 batting_data = pd.read_csv(fr"{bat_data_input}")
 bowling_data = pd.read_csv(fr"{bowl_data_input}")
@@ -52,9 +67,6 @@ bat_data["Player Name"] = batting_data["Player Name"]
 bat_data["Player ID "] = batting_data["Player ID"]
 bat_data["Batting Score"] = batting_data["Batting_Combined_Score"]
 bat_data["Runs Made"] = batting_data["Runs Made"]
-
-df = pd.read_csv(fr"{df_data_input}")
-player_mapping = pd.read_csv(fr"{player_map_input}")
 
 data_preprocessing(df)
 
@@ -116,6 +128,14 @@ with st.sidebar:
     title_bat = st.text_input("Batting View Title", placeholder = "Please Input View Name", key="bat_title")
     title_bowl = st.text_input("Bowling View Title", placeholder = "Please Input View Name", key="bowl_title")
 
+
+
+    format_select = st.multiselect(
+        "Which format(s) would you like to include in your rankings?",
+        ["T20", "ODI", "Four Day"],
+        max_selections=5,
+        accept_new_options=True,
+    )
     with st.sidebar.container():
         st.subheader("Batting Factors")
         with st.expander("Strike Rate"):
@@ -123,7 +143,7 @@ with st.sidebar:
             sr_baseline = st.slider("Strike Rate Baseline", 0.0, 2.0, 1.1, 0.15)
             sr_range_min = st.slider("Strike Rate Range Minimum", 0.0, 1.0, 0.5, 0.1)
             sr_range_max = st.slider("Strike Rate Range Maximum", 0.0, 3.0, 2.0, 0.25)
-            sr_factor_min = st.slider("Strike Rate Factir Minimum", 0.0, 1.0, 0.85, 0.05)
+            sr_factor_min = st.slider("Strike Rate Factor Minimum", 0.0, 1.0, 0.85, 0.05)
             sr_factor_max = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, 1.25, 0.25)
 
         with st.expander("Tournament Factors"):
@@ -186,15 +206,32 @@ with st.sidebar:
     
     with st.sidebar.container():
         st.subheader("Format Factors")
-        with st.expander("T20"):
-            t20_min_bat_ins = st.slider("T20 - Minimum Batting Innings", 0.0, 10.0, 5.0, 1.0)
-            t20_min_bwl_ins = st.slider("T20 - Minimum Bowling Innings", 0.0, 10.0, 5.0, 1.0)
-            t20_run_val_prop = st.slider("T20 - Runs Value Total Prop", 0.0, 100.0, 60.0, 10.0)
-            t20_run_avg_prop = st.slider("T20 - Runs Value Average Prop", 0.0, 100.0, 40.0, 10.0)
-            t20_min_run_pctl = st.slider("T20 - Minimum Runs Percentile", 0.0, 2.0, 0.1, 0.05)
-            t20_max_run_pctl = st.slider("T20 - Maximum Runs Percentile", 0.0, 2.0, 0.95, 0.05)
-# ✅ Populate runtime config from slider inputs
+        with st.expander(f"{format_select}"):
+            t20_min_bat_ins = st.slider("Minimum Batting Innings", 0.0, 10.0, 5.0, 1.0)
+            t20_min_bwl_ins = st.slider("Minimum Bowling Innings", 0.0, 10.0, 5.0, 1.0)
+            t20_run_val_prop = st.slider("Runs Value Total Prop", 0.0, 100.0, 60.0, 10.0)
+            t20_run_avg_prop = st.slider("Runs Value Average Prop", 0.0, 100.0, 40.0, 10.0)
+            t20_min_run_pctl = st.slider("Minimum Runs Percentile", 0.0, 2.0, 0.1, 0.05)
+            t20_max_run_pctl = st.slider("Maximum Runs Percentile", 0.0, 2.0, 0.95, 0.05)
 
+# ✅ Populate runtime config from slider inputs
+# Map display names to actual format values in the data
+FORMAT_MAP = {
+    "T20": "t20",
+    "ODI": "one_day",
+    "Four Day": "four_day"
+}
+
+# Convert selected formats to the actual values used in the dataset
+selected_formats = [FORMAT_MAP[fmt] for fmt in format_select if fmt in FORMAT_MAP]
+
+# Ensure Format column is lowercase
+df["Format"] = df["Format"].str.lower()
+
+# Filter the DataFrame
+df = df[df["Format"].isin(selected_formats)]
+
+# st.write(df["Tournament"])
 # Strike Rate
 config["SR_FACTOR_DEFAULT"] = sr_default
 config["SR_BASELINE"] = sr_baseline
