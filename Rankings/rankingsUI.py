@@ -128,81 +128,78 @@ with st.sidebar:
     title_bat = st.text_input("Batting View Title", placeholder = "Please Input View Name", key="bat_title")
     title_bowl = st.text_input("Bowling View Title", placeholder = "Please Input View Name", key="bowl_title")
 
-
-
+        # Format selection and normalization
     format_select = st.multiselect(
         "Which format(s) would you like to include in your rankings?",
-        ["T20", "ODI", "Four Day"],
-        max_selections=5,
-        accept_new_options=True,
+        options=["T20", "ODI", "Four Day"],
+        default=["T20"]
     )
+
+    # Normalize format selections
+    selected_formats = [fmt.lower() for fmt in format_select]
+
+    # Ensure the data is normalized and filtered
+    df["Format"] = df["Format"].str.lower()
+    df = df[df["Format"].isin(selected_formats)]
+
     with st.sidebar.container():
         st.subheader("Batting Factors")
         with st.expander("Strike Rate"):
-            sr_default = st.slider("Strike Rate Default", 0.0, 1.0, 1.0, 0.15)
-            sr_baseline = st.slider("Strike Rate Baseline", 0.0, 2.0, 1.1, 0.15)
-            sr_range_min = st.slider("Strike Rate Range Minimum", 0.0, 1.0, 0.5, 0.1)
-            sr_range_max = st.slider("Strike Rate Range Maximum", 0.0, 3.0, 2.0, 0.25)
-            sr_factor_min = st.slider("Strike Rate Factor Minimum", 0.0, 1.0, 0.85, 0.05)
-            sr_factor_max = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, 1.25, 0.25)
+            config["SR_FACTOR_DEFAULT"] = st.slider("Strike Rate Default", 0.0, 1.0, 1.0, 0.15)
+            config["SR_BASELINE"] = st.slider("Strike Rate Baseline", 0.0, 2.0, 1.1, 0.15)
+            config["SR_RANGE_MIN"] = st.slider("Strike Rate Range Minimum", 0.0, 1.0, 0.5, 0.1)
+            config["SR_RANGE_MAX"] = st.slider("Strike Rate Range Maximum", 0.0, 3.0, 2.0, 0.25)
+            config["SR_FACTOR_MIN"] = st.slider("Strike Rate Factor Minimum", 0.0, 1.0, 0.85, 0.05)
+            config["SR_FACTOR_MAX"] = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, 1.25, 0.25)
 
         with st.expander("Tournament Factors"):
-            tourn_default = st.slider("Tournament Factor Default", 0.0, 1.0, 1.0, 0.1)
-            psl_weight = st.slider("PSL", 0.0, 2.0, 1.2, 0.1)
-            champ_t20 = st.slider("Champions Cup T20", 0.0, 2.0, 1.0, 0.1)
-            nat_t20 = st.slider("National T20", 0.0, 1.0, 0.8, 0.1)
-            champ_ODI = st.slider("Champions ODI", 0.0, 2.0, 1.05, 0.05)
-            pres_ODI = st.slider("President's Cup ODI", 0.0, 2.0, 1.0, 0.1)
-            qat = st.slider("QAT", 0.0, 2.0, 1.05, 0.05)
-            pres_gradeI = st.slider("President's Trophy Grade-I", 0.0, 2.0, 1.0, 0.1)
+            config["TOURNAMENT_FACTOR_DEFAULT"] = st.slider("Tournament Factor Default", 0.0, 1.0, 1.0, 0.1)
+            config["TOURNAMENT_FACTOR_DICT"]["psl"] = st.slider("PSL", 0.0, 2.0, 1.2, 0.1)
+            config["TOURNAMENT_FACTOR_DICT"]["champions t20"] = st.slider("Champions Cup T20", 0.0, 2.0, 1.0, 0.1)
+            config["TOURNAMENT_FACTOR_DICT"]["national t20"] = st.slider("National T20", 0.0, 1.0, 0.8, 0.1)
+            config["TOURNAMENT_FACTOR_DICT"]["champions one day"] = st.slider("Champions ODI", 0.0, 2.0, 1.05, 0.05)
+            config["TOURNAMENT_FACTOR_DICT"]["president's cup one-day"] = st.slider("President's Cup ODI", 0.0, 2.0, 1.0, 0.1)
+            config["TOURNAMENT_FACTOR_DICT"]["qat"] = st.slider("QAT", 0.0, 2.0, 1.05, 0.05)
+            config["TOURNAMENT_FACTOR_DICT"]["president's trophy grade-I"] = st.slider("President's Trophy Grade-I", 0.0, 2.0, 1.0, 0.1)
         
         with st.expander("Opponent Quality Factors"):
-            opp_quality_default = st.slider("Opponent Quality Default", 0.0, 2.0, 1.0, 0.1)
-            opp_quality_max_diff = st.slider("Opponent Quality Maximum Ranking Difference", 0.0, 5.0, 4.0, 0.5)
-            opp_quality_factor_min = st.slider("Opponent Quality Factor Minimum", 0.0, 1.0, 0.8, 0.1)
-            opp_quality_factor_max = st.slider("Opponent Quality Factor Maximum", 0.0, 2.0, 1.2, 0.1)
+            config["OPP_QUALITY_FACTOR_DEFAULT"] = st.slider("Opponent Quality Default", 0.0, 2.0, 1.0, 0.1)
+            config["OPP_QUALITY_MAX_RANK_DIFF"] = st.slider("Opp Quality Max Rank Diff", 0.0, 5.0, 4.0, 0.5)
+            config["OPP_QUALITY_FACTOR_MIN"] = st.slider("Opp Quality Factor Min", 0.0, 1.0, 0.8, 0.1)
+            config["OPP_QUALITY_FACTOR_MAX"] = st.slider("Opp Quality Factor Max", 0.0, 2.0, 1.2, 0.1)
 
         with st.expander("Batting Position Factors"):
-            bat_pos_default = st.slider("Batting Position Default", 0.0, 1.0, 1.0, 0.1)
-            pos_1_3 = st.slider("Batting Position 1-3", 0.0, 2.0, 0.95, 0.05)
-            pos_4_5 = st.slider("Batting Position 4-5", 0.0, 2.0, 1.0, 0.05)
-            pos_6_8 = st.slider("Batting Position 6-8", 0.0, 2.0, 1.05, 0.05)
-            pos_9_11 = st.slider("Batting Position 9-11", 0.0, 2.0, 1.1, 0.05)
+            config["BATTING_POS_DEFAULT"] = st.slider("Batting Position Default", 0.0, 2.0, config["BATTING_POS_DEFAULT"], 0.1)
+            config["POS_1_3"] = st.slider("Batting Position 1-3", 0.0, 2.0, config["POS_1_3"], 0.05)
+            config["POS_4_5"] = st.slider("Batting Position 4-5", 0.0, 2.0, config["POS_4_5"], 0.05)
+            config["POS_6_8"] = st.slider("Batting Position 6-8", 0.0, 2.0, config["POS_6_8"], 0.05)
+            config["POS_9_11"] = st.slider("Batting Position 9-11", 0.0, 2.0, config["POS_9_11"], 0.05)
 
         with st.expander("Wicket Position Factors"):
-            wkt_default = st.slider("Wicket Position Default", 0.0, 2.0, 1.0, 0.5)
-            pos_1 = st.slider("Wicket Position 1", 0.0, 2.0, 1.1, 0.05)
-            pos_2 = st.slider("Wicket Position 2", 0.0, 2.0, 1.1, 0.05)
-            pos_3 = st.slider("Wicket Position 3", 0.0, 2.0, 1.1, 0.05)
-            pos_4 = st.slider("Wicket Position 4", 0.0, 2.0, 1.05, 0.05)
-            pos_5 = st.slider("Wicket Position 5", 0.0, 2.0, 1.05, 0.05)
-            pos_6 = st.slider("Wicket Position 6", 0.0, 2.0, 1.0, 0.05)
-            pos_7 = st.slider("Wicket Position 7", 0.0, 2.0, 1.0, 0.05)
-            pos_8 = st.slider("Wicket Position 8", 0.0, 2.0, 1.0, 0.05)
-            pos_9 = st.slider("Wicket Position 9", 0.0, 2.0, 0.95, 0.05)
-            pos_10 = st.slider("Wicket Position 10", 0.0, 2.0, 0.95, 0.05)
-            pos_11 = st.slider("Wicket Position 11", 0.0, 2.0, 0.95, 0.05)
+            config["WICKET_BAT_POS_DEFAULT"] = st.slider("Wicket Position Default", 0.0, 2.0, config["WICKET_BAT_POS_DEFAULT"], 0.1)
+            for i in range(1, 12):
+                config["WICKET_BAT_POS_FACTOR_DICT"][i] = st.slider(f"Wicket Position {i}", 0.0, 2.0, config["WICKET_BAT_POS_FACTOR_DICT"][i], 0.05)
 
 
     with st.sidebar.container():
         st.subheader("Bowling Factors")
         with st.expander("Economy Rate Factors"): 
-            econ_rate = st.slider("Economy Rate Default", 0.0, 2.0, 1.0, 0.1)
-            econ_rate_baseline = st.slider("Economy Rate Baseline", 0.0, 2.0, 1.1, 0.1)
-            econ_rate_range_min = st.slider("Economy Rate Range Minimum", 0.0, 1.0, 0.8, 0.1)
-            econ_rate_range_max = st.slider("Economy Rate Range Maximum", 0.0, 2.0, 2.0, 0.1)
-            econ_rate_factor_min = st.slider("Economy Rate Factor Minimum", 0.0, 2.0, 0.85, 0.05)
-            econ_rate_factor_max = st.slider("Economy Rate Factor Maximum", 0.0, 2.0, 1.25, 0.05)
+            config["ECON_RATE_FACTOR_DEFAULT"] = st.slider("Economy Rate Default", 0.0, 2.0, config["ECON_RATE_FACTOR_DEFAULT"], 0.1)
+            config["ECON_RATE_BASELINE"] = st.slider("Economy Rate Baseline", 0.0, 2.0, config["ECON_RATE_BASELINE"], 0.1)
+            config["ECON_RATE_RANGE_MIN"] = st.slider("Economy Rate Range Minimum", 0.0, 1.0, config["ECON_RATE_RANGE_MIN"], 0.1)
+            config["ECON_RATE_RANGE_MAX"] = st.slider("Economy Rate Range Maximum", 0.0, 2.0, config["ECON_RATE_RANGE_MAX"], 0.1)
+            config["ECON_RATE_FACTOR_MIN"] = st.slider("Economy Rate Factor Minimum", 0.0, 2.0, config["ECON_RATE_FACTOR_MIN"], 0.05)
+            config["ECON_RATE_FACTOR_MAX"] = st.slider("Economy Rate Factor Maximum", 0.0, 2.0, config["ECON_RATE_FACTOR_MAX"], 0.05)
 
     with st.sidebar.container():
         st.subheader("Special Factors")
         with st.expander("Batting Talent"):
-            bat_talent_special_default = st.slider("Batting Talent Default", 0.0, 2.0, 1.0, 0.1)
-            bat_talent_special = st.slider("Special Batting Talent", 0.0, 2.0, 1.1, 0.1)
+            config["BAT_TALENT_DEFAULT"] = st.slider("Batting Talent Default", 0.0, 2.0, 1.0, 0.1)
+            config["BAT_TALENT_SPECIAL"] = st.slider("Special Batting Talent", 0.0, 2.0, 1.1, 0.1)
 
         with st.expander("Bowling Talent"):
-            bwl_talent_special_default = st.slider("Bowling Talent Default", 0.0, 2.0, 1.0, 0.1)
-            bwl_talent_special = st.slider("Special Bowling Talent", 0.0, 2.0, 1.1, 0.1)
+            config["BOWL_TALENT_DEFAULT"] = st.slider("Bowling Talent Default", 0.0, 2.0, 1.0, 0.1)
+            config["BOWL_TALENT_SPECIAL"] = st.slider("Special Bowling Talent", 0.0, 2.0, 1.1, 0.1)
     
     with st.sidebar.container():
         st.subheader("Format Factors")
@@ -214,105 +211,40 @@ with st.sidebar:
             t20_min_run_pctl = st.slider("Minimum Runs Percentile", 0.0, 2.0, 0.1, 0.05)
             t20_max_run_pctl = st.slider("Maximum Runs Percentile", 0.0, 2.0, 0.95, 0.05)
 
-# ✅ Populate runtime config from slider inputs
-# Map display names to actual format values in the data
-FORMAT_MAP = {
-    "T20": "t20",
-    "ODI": "one_day",
-    "Four Day": "four_day"
-}
 
-# Convert selected formats to the actual values used in the dataset
-selected_formats = [FORMAT_MAP[fmt] for fmt in format_select if fmt in FORMAT_MAP]
 
-# Ensure Format column is lowercase
-df["Format"] = df["Format"].str.lower()
-
-# Filter the DataFrame
-df = df[df["Format"].isin(selected_formats)]
-
-# st.write(df["Tournament"])
-# Strike Rate
-config["SR_FACTOR_DEFAULT"] = sr_default
-config["SR_BASELINE"] = sr_baseline
-config["SR_RANGE_MIN"] = sr_range_min
-config["SR_RANGE_MAX"] = sr_range_max
-config["SR_FACTOR_MIN"] = sr_factor_min
-config["SR_FACTOR_MAX"] = sr_factor_max
-
-# Tournament
-config["TOURNAMENT_FACTOR_DEFAULT"] = tourn_default
-config["TOURNAMENT_FACTOR_DICT"] = {
-    "psl": psl_weight,
-    "champions t20": champ_t20,
-    "national t20": nat_t20,
-    "champions one day": champ_ODI,
-    "president's cup one-day": pres_ODI,
-    "qat": qat,
-    "president's trophy grade-I": pres_gradeI,
-}
-
-# Opponent Quality
-config["OPP_QUALITY_FACTOR_DEFAULT"] = opp_quality_default
-config["OPP_QUALITY_RANKING_MAX_DIFF"] = opp_quality_max_diff
-config["OPP_QUALITY_FACTOR_MIN"] = opp_quality_factor_min
-config["OPP_QUALITY_FACTOR_MAX"] = opp_quality_factor_max
-
-# Batting Position
-config["BATTING_POS_DEFAULT"] = bat_pos_default
-config["POS_1_3"] = pos_1_3
-config["POS_4_5"] = pos_4_5
-config["POS_6_8"] = pos_6_8
-config["POS_9_11"] = pos_9_11
-
-# Wicket Position Factors
-config["WICKET_BAT_POS_DEFAULT"] = wkt_default
-config["WICKET_BAT_POS_FACTOR_DICT"] = {
-    1: pos_1, 2: pos_2, 3: pos_3,
-    4: pos_4, 5: pos_5, 6: pos_6,
-    7: pos_7, 8: pos_8, 9: pos_9,
-    10: pos_10, 11: pos_11,
-}
-
-# Economy Rate
-config["ECON_RATE_FACTOR_DEFAULT"] = econ_rate
-config["ECON_RATE_BASELINE"] = econ_rate_baseline
-config["ECON_RATE_RANGE_MIN"] = econ_rate_range_min
-config["ECON_RATE_RANGE_MAX"] = econ_rate_range_max
-config["ECON_RATE_FACTOR_MIN"] = econ_rate_factor_min
-config["ECON_RATE_FACTOR_MAX"] = econ_rate_factor_max
 
 # Special Talents
-config["BAT_TALENT_DEFAULT"] = bat_talent_special_default
-config["BAT_TALENT_SPECIAL"] = bat_talent_special
-config["BOWL_TALENT_DEFAULT"] = bwl_talent_special_default
-config["BOWL_TALENT_SPECIAL"] = bwl_talent_special
+# config["BAT_TALENT_DEFAULT"] = bat_talent_special_default
+# config["BAT_TALENT_SPECIAL"] = bat_talent_special
+# config["BOWL_TALENT_DEFAULT"] = bwl_talent_special_default
+# config["BOWL_TALENT_SPECIAL"] = bwl_talent_special
 
 
 
 # Batting Factors Calculations
 
 # Set the SR factor.
-ft20.strike_rate_factor(df, "Runs Made", "Balls Consumed", config["FACTOR_SR"])
+ft20.strike_rate_factor(df, "Runs Made", "Balls Consumed", config["FACTOR_SR"], config)
 
 # Set the Tournament factor.
-ft20.tournament_calibre_factor(df, "Tournament", config["FACTOR_TOURNAMENT"])
+ft20.tournament_calibre_factor(df, "Tournament", config["FACTOR_TOURNAMENT"], config)
 
 # Set the Team Ranking diff (Opposition Quality) factor
-ft20.opp_quality_factor(df, "Team Standing", "Opposition Standing", config["FACTOR_OPP_QUALITY"])
+ft20.opp_quality_factor(df, "Team Standing", "Opposition Standing", config["FACTOR_OPP_QUALITY"], config)
 
 # Set the Batting Position Factor
-ft20.batting_position_factor(df, "Runs Made", "Batting Position", config["FACTOR_BAT_POSITION"])
+ft20.batting_position_factor(df, "Runs Made", "Batting Position", config["FACTOR_BAT_POSITION"], config)
 
 # Set the Special Batting Talent Factor
-ft20.special_bat_talent_factor(df, "Special Batting Talent", config["FACTOR_SPECIAL_BAT_TALENT"])
+ft20.special_bat_talent_factor(df, "Special Batting Talent", config["FACTOR_SPECIAL_BAT_TALENT"], config)
 
 batting_factors = [
-    (config["FACTOR_SR"], sr_default),
-    (config["FACTOR_TOURNAMENT"], tourn_default),
-    (config["FACTOR_OPP_QUALITY"], opp_quality_default),
-    (config["FACTOR_BAT_POSITION"], bat_pos_default),
-    (config["FACTOR_SPECIAL_BAT_TALENT"], bat_talent_special)
+    (config["FACTOR_SR"], config["SR_FACTOR_DEFAULT"]),
+    (config["FACTOR_TOURNAMENT"], config["TOURNAMENT_FACTOR_DEFAULT"]),
+    (config["FACTOR_OPP_QUALITY"], config["OPP_QUALITY_FACTOR_DEFAULT"]),
+    (config["FACTOR_BAT_POSITION"], config["BATTING_POS_DEFAULT"]),
+    (config["FACTOR_SPECIAL_BAT_TALENT"], config["BAT_TALENT_DEFAULT"])
 ]
 
 
@@ -340,21 +272,21 @@ df_bat_agg = agg.add_runvalues(
 
 ## BOWLING
 #Set the Special Bowling Talent Factor
-ft20.special_bat_talent_factor(df, "Special Bowling Talent", config["FACTOR_SPECIAL_BOWL_TALENT"])
+ft20.special_bat_talent_factor(df, "Special Bowling Talent", config["FACTOR_SPECIAL_BOWL_TALENT"], config)
 
 #Batter dismissed factor.
-ft20.batters_dismissed_position_factor(df, "Wickets Taken", "Batters Dismissed", config["FACTOR_WICKETS_BATTER_POS_DISMISSED"])
+ft20.batters_dismissed_position_factor(df, "Wickets Taken", "Batters Dismissed", config["FACTOR_WICKETS_BATTER_POS_DISMISSED"], config)
 
 #Economy Rate factor.
-ft20.economy_rate_factor(df, "Runs Given", "Balls Bowled", config["FACTOR_ECON_RATE"])
+ft20.economy_rate_factor(df, "Runs Given", "Balls Bowled", config["FACTOR_ECON_RATE"], config)
 
 batting_factors = [
-    (config["FACTOR_ECON_RATE"], econ_rate),
-    (config["FACTOR_WICKETS_BATTER_POS_DISMISSED"], bat_pos_default),
-    (config["FACTOR_TOURNAMENT"], tourn_default),
-    (config["FACTOR_OPP_QUALITY"], opp_quality_default),
-    (config["FACTOR_BAT_POSITION"], bat_pos_default),
-    (config["FACTOR_SPECIAL_BOWL_TALENT"], bwl_talent_special)
+    (config["FACTOR_ECON_RATE"], config["ECON_RATE_FACTOR_DEFAULT"]),
+    (config["FACTOR_WICKETS_BATTER_POS_DISMISSED"], config["WICKET_BAT_POS_DEFAULT"]),
+    (config["FACTOR_TOURNAMENT"], config["TOURNAMENT_FACTOR_DEFAULT"]),
+    (config["FACTOR_OPP_QUALITY"], config["OPP_QUALITY_FACTOR_DEFAULT"]),
+    (config["FACTOR_BAT_POSITION"], config["BATTING_POS_DEFAULT"]),
+    (config["FACTOR_SPECIAL_BOWL_TALENT"], config["BOWL_TALENT_DEFAULT"])
 ]
 
 bowling_factors = [config["FACTOR_ECON_RATE"], config["FACTOR_WICKETS_BATTER_POS_DISMISSED"], config["FACTOR_TOURNAMENT"], config["FACTOR_OPP_QUALITY"], config["FACTOR_SPECIAL_BOWL_TALENT"]]
