@@ -44,11 +44,9 @@ for i in range(len(gids)):
 
 df = pd.concat(dfs, ignore_index=True)
 
-df.to_csv = ("outputData.csv")
 mapping_url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=csv&gid=1945069261"
 
 player_mapping = pd.read_csv(mapping_url)
-
 # Load data
 bowl_data_input = os.path.join(DATA_DIR,"bowl_data.csv")
 bat_data_input = os.path.join(DATA_DIR,"bat_data.csv")
@@ -131,7 +129,7 @@ with st.sidebar:
         # Format selection and normalization
     format_select = st.multiselect(
         "Which format(s) would you like to include in your rankings?",
-        options=["T20", "ODI", "Four Day"],
+        options=["T20", "ODI"],
         default=["T20"]
     )
 
