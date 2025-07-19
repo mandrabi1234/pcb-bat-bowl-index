@@ -9,8 +9,7 @@ def standardize_vals(df, col, new_col, min_percentile, max_percentile):
     
     val_min = df[col].quantile(min_percentile)
     val_max = df[col].quantile(max_percentile)
-    val_range = val_max - val_min + 1
-
+    val_range = val_max - val_min + 1e-9  
     # print(val_min, val_max, val_range)
 
     df[new_col] = df[col]
@@ -19,6 +18,8 @@ def standardize_vals(df, col, new_col, min_percentile, max_percentile):
 
     # Normalize
     df[new_col] = (df[new_col] - val_min) / val_range
+
+    df[new_col] = df[new_col].clip(lower=0.05, upper=1.0)
 
     return df
 
