@@ -317,6 +317,8 @@ with tab1:
             rankings_config["RUNVALUE_AVG_COL"]
         )
         df_bat_rank = player_map(player_mapping, df_bat_rank, "Player Name", "Player ID")
+        df_bat_rank["Batting Score"] = df_bat_rank["Batting_Combined_Score"]
+        df_bat_rank = df_bat_rank[['Player Name', 'Player ID', 'Batting Score', 'Runs Made']]
         if len(st.session_state.bat_filtered_outputs) < 5:
             st.session_state.bat_filtered_outputs.append({
                 'title': title_bat or f"Output {len(st.session_state.bat_filtered_outputs) + 1}",
@@ -346,7 +348,11 @@ with tab2:
             rankings_config["WICKETVALUE_COL"],
             rankings_config["WICKETVALUE_AVG_COL"]
         )
+        
         df_bwl_rank = player_map(player_mapping, df_bwl_rank, "Player Name", "Player ID")
+        df_bwl_rank["Bowling Score"] = df_bwl_rank["Bowling_Combined_Score"]
+        df_bwl_rank = df_bwl_rank[['Player Name', 'Player ID', 'Bowling Score', 'Runs Made']]
+
         if len(st.session_state.bowl_filtered_outputs) < 5:
             st.session_state.bowl_filtered_outputs.append({
                 'title': title_bowl or f"Output {len(st.session_state.bowl_filtered_outputs) + 1}",
