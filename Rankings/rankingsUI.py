@@ -45,6 +45,8 @@ for i in range(len(gids)):
 
 df = pd.concat(dfs, ignore_index=True)
 
+print(df['Format'].unique())
+
 mapping_url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=csv&gid=1945069261"
 
 player_mapping = pd.read_csv(mapping_url)
@@ -129,6 +131,14 @@ with st.sidebar:
     st.markdown("### Filter View Names")
     title_bat = st.text_input("View Title", placeholder = "Please Input View Name", key="bat_title")
 
+
+    # Map UI labels to actual dataset values
+    format_map = {
+        "T20": "t20",
+        "ODI": "one_day",
+        "Four Day": "four_day"
+    }
+
         # Format selection and normalization
     format_select = st.multiselect(
         "Which format(s) would you like to include in your rankings?",
@@ -137,8 +147,8 @@ with st.sidebar:
     )
 
     # Normalize format selections
-    selected_formats = [fmt.lower() for fmt in format_select]
-
+    selected_formats = [format_map[fmt] for fmt in format_select if fmt in format_map]
+    
     # Ensure the data is normalized and filtered
     df["Format"] = df["Format"].str.lower()
     df = df[df["Format"].isin(selected_formats)]
