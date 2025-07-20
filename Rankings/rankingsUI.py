@@ -332,15 +332,11 @@ with tab1:
             st.warning("You can only store up to 5 filtered outputs.")
 
     # Display outputs side by side
-    cols = st.columns(min(1 + len(st.session_state.bat_filtered_outputs), 5))
-    with cols[0]:
-        st.subheader("DefaultData")
+    with st.expander("Default Data", expanded=True):
         st.dataframe(bat_data)
-
-    for i, output in enumerate(st.session_state.bat_filtered_outputs, start=1):
-        with cols[i]:
-            st.subheader(output['title'])
-            st.dataframe(output['data'])
+        for output in st.session_state.bat_filtered_outputs:
+            with st.expander(output['title'], expanded=False):
+                st.dataframe(output['data'])            
 with tab2:
     if 'bowl_filtered_outputs' not in st.session_state:
         st.session_state.bowl_filtered_outputs = []
@@ -366,12 +362,9 @@ with tab2:
             st.warning("You can only store up to 5 filtered outputs.")
 
     # Display outputs side by side
-    cols = st.columns(min(1 + len(st.session_state.bowl_filtered_outputs), 5))
-    with cols[0]:
-        st.subheader("Default Data")
+    with st.expander("Default Data", expanded=True):
         st.dataframe(bowl_data)
 
-    for i, output in enumerate(st.session_state.bowl_filtered_outputs, start=1):
-        with cols[i]:
-            st.subheader(output['title'])
-            st.dataframe(output['data'])
+        for output in st.session_state.bowl_filtered_outputs:
+            with st.expander(output['title'], expanded=False):
+                st.dataframe(output['data'])
