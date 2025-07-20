@@ -18,6 +18,7 @@ import pandas as pd
 import numpy as np
 
 from constants_t20 import config as default_config
+from generate_default_rankings import generate_default_rankings
 import copy
 
 # Create a runtime config editable by the UI
@@ -48,11 +49,14 @@ mapping_url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?f
 
 player_mapping = pd.read_csv(mapping_url)
 # Load data
-bowl_data_input = os.path.join(DATA_DIR,"bowl_data.csv")
-bat_data_input = os.path.join(DATA_DIR,"bat_data.csv")
 
-batting_data = pd.read_csv(fr"{bat_data_input}")
-bowling_data = pd.read_csv(fr"{bowl_data_input}")
+batting_data, bowling_data = generate_default_rankings( df, player_mapping)
+
+# bowl_data_input = os.path.join(DATA_DIR,"bowl_data.csv")
+# bat_data_input = os.path.join(DATA_DIR,"bat_data.csv")
+
+# batting_data = pd.read_csv(fr"{bat_data_input}")
+# bowling_data = pd.read_csv(fr"{bowl_data_input}")
 
 bowl_data = pd.DataFrame()
 bowl_data["Player Name"] = bowling_data["Player Name"]
@@ -123,8 +127,7 @@ tab1, tab2 = st.tabs(["🏏 Batting Rankings", "🎯 Bowling Rankings"])
 
 with st.sidebar:
     st.markdown("### Filter View Names")
-    title_bat = st.text_input("Batting View Title", placeholder = "Please Input View Name", key="bat_title")
-    title_bowl = st.text_input("Bowling View Title", placeholder = "Please Input View Name", key="bowl_title")
+    title_bat = st.text_input("View Title", placeholder = "Please Input View Name", key="bat_title")
 
         # Format selection and normalization
     format_select = st.multiselect(
@@ -278,7 +281,7 @@ ft20.batters_dismissed_position_factor(df, "Wickets Taken", "Batters Dismissed",
 #Economy Rate factor.
 ft20.economy_rate_factor(df, "Runs Given", "Balls Bowled", config["FACTOR_ECON_RATE"], config)
 
-batting_factors = [
+bowling_factors = [
     (config["FACTOR_ECON_RATE"], config["ECON_RATE_FACTOR_DEFAULT"]),
     (config["FACTOR_WICKETS_BATTER_POS_DISMISSED"], config["WICKET_BAT_POS_DEFAULT"]),
     (config["FACTOR_TOURNAMENT"], config["TOURNAMENT_FACTOR_DEFAULT"]),
@@ -287,7 +290,8 @@ batting_factors = [
     (config["FACTOR_SPECIAL_BOWL_TALENT"], config["BOWL_TALENT_DEFAULT"])
 ]
 
-bowling_factors = [config["FACTOR_ECON_RATE"], config["FACTOR_WICKETS_BATTER_POS_DISMISSED"], config["FACTOR_TOURNAMENT"], config["FACTOR_OPP_QUALITY"], config["FACTOR_SPECIAL_BOWL_TALENT"]]
+# bowling_factors = [config["FACTOR_ECON_RATE"], config["FACTOR_WICKETS_BATTER_POS_DISMISSED"], config["FACTOR_TOURNAMENT"], config["FACTOR_OPP_QUALITY"], config["FACTOR_SPECIAL_BOWL_TALENT"]]
+print("---Bowling Factors---\n", bowling_factors)
 df_bowl_agg = agg.add_wicketvalues(
     df, 
     rankings_config["WICKETS_AVG_COL"], 
@@ -351,11 +355,11 @@ with tab2:
         
         df_bwl_rank = player_map(player_mapping, df_bwl_rank, "Player Name", "Player ID")
         df_bwl_rank["Bowling Score"] = df_bwl_rank["Bowling_Combined_Score"]
-        df_bwl_rank = df_bwl_rank[['Player Name', 'Player ID', 'Bowling Score', 'Runs Made']]
+        df_bwl_rank = df_bwl_rank[['Player Name', 'Player ID', 'Bowling Score', 'Wickets Taken']]
 
         if len(st.session_state.bowl_filtered_outputs) < 5:
             st.session_state.bowl_filtered_outputs.append({
-                'title': title_bowl or f"Output {len(st.session_state.bowl_filtered_outputs) + 1}",
+                'title': title_bat or f"Output {len(st.session_state.bowl_filtered_outputs) + 1}",
                 'data': df_bwl_rank
             })
         else:

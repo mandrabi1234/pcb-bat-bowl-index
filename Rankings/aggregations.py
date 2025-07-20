@@ -47,43 +47,26 @@ def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_
 
 
 def add_wicketvalues(df, wickets_avg_col, wicketvalue_col, wicketvalue_avg_col, player_col, total_played_col, balls_bowled, wickets_col, factor_cols):
-    """Aggregate the "value of runs" for each player.
-
-    Args:
-        df: the filtered dataframe for a format.
-        wickets_avg_col: the column name of the new RAW wickets AVG column.
-        wicketvalue_col: the column name of the new wickets value column.
-        wicketvalue_avg_col: the column name of the new wickets value AVG column.
-        player_col: the column name for player ID.
-        total_played_col: the column name of the new total innings played column.
-        balls_bowled: the column name for the number of balls bowled.
-        wickets_col: the column name for (raw) number of wickets.
-        factor_cols: a list with column names for all factors.
-
-    Returns:
-        A dataframe which has columns:
-            player_col, wickets_col (summed), wicketvalue_col (summed), wickets_avg_col, wicketsvalue_avg_col
-    """
-    cols = factor_cols + [player_col, wickets_col, balls_bowled]
-    df_filtered = df[cols]
+    """Aggregate the "value of wickets" for each player."""
+    
+    # Unpack only the column names from the (column_name, weight) tuples
+    cols = [col_name for col_name, _ in factor_cols] + [player_col, wickets_col, balls_bowled]
+    df_filtered = df[cols].copy()
     df_filtered[wicketvalue_col] = df_filtered[wickets_col]
 
-    for c in factor_cols:
-        df_filtered[wicketvalue_col] *= df_filtered[c]
-    
-    # Set total_played_col to 0 if Nan, else set to 1.
-    df_filtered[total_played_col] =  np.where(
-        (df_filtered[balls_bowled].isna() | df_filtered[balls_bowled] == 0) , 0, 1)
+    for col_name, weight in factor_cols:
+        df_filtered[wicketvalue_col] *= df_filtered[col_name] * weight
 
-    # Now group by and sum.
+    df_filtered[total_played_col] = np.where(
+        (df_filtered[balls_bowled].isna() | (df_filtered[balls_bowled] == 0)), 0, 1
+    )
+
     cols_to_sum = [wickets_col, wicketvalue_col, total_played_col]
     df_filtered[wicketvalue_col] = pd.to_numeric(df_filtered[wicketvalue_col], errors='coerce')
 
     df_filtered = df_filtered.groupby(player_col)[cols_to_sum].sum(numeric_only=True).reset_index()
-    
-    # Also add the average columns.
+
     df_filtered[wicketvalue_avg_col] = df_filtered[wicketvalue_col] / df_filtered[total_played_col]
     df_filtered[wickets_avg_col] = df_filtered[wickets_col] / df_filtered[total_played_col]
-
 
     return df_filtered
