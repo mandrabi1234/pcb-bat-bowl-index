@@ -63,14 +63,14 @@ batting_data, bowling_data = generate_default_rankings( df, player_mapping)
 bowl_data = pd.DataFrame()
 bowl_data["Player Name"] = bowling_data["Player Name"]
 bowl_data["Player ID "] = bowling_data["Player ID"]
-bowl_data["Bowling Score"] = bowling_data["Bowling_Combined_Score"]
 bowl_data["Wickets Taken"] = bowling_data["Wickets Taken"]
+bowl_data["Bowling Score"] = bowling_data["Bowling_Combined_Score"]
 
 bat_data = pd.DataFrame()
 bat_data["Player Name"] = batting_data["Player Name"]
 bat_data["Player ID "] = batting_data["Player ID"]
-bat_data["Batting Score"] = batting_data["Batting_Combined_Score"]
 bat_data["Runs Made"] = batting_data["Runs Made"]
+bat_data["Batting Score"] = batting_data["Batting_Combined_Score"]
 
 data_preprocessing(df)
 
@@ -142,7 +142,7 @@ with st.sidebar:
         # Format selection and normalization
     format_select = st.multiselect(
         "Which format(s) would you like to include in your rankings?",
-        options=["T20", "ODI"],
+        options=["T20", "ODI", "Four Day"],
         default=["T20"]
     )
 
@@ -342,8 +342,10 @@ with tab1:
             st.warning("You can only store up to 5 filtered outputs.")
 
     # Display outputs side by side
-    with st.expander("Default Data", expanded=True):
+    with st.expander("Default Rankings", expanded=True):
         st.dataframe(bat_data)
+
+    with st.expander("User Generated Rankings", expanded = True):
         for output in st.session_state.bat_filtered_outputs:
             with st.expander(output['title'], expanded=False):
                 st.dataframe(output['data'])            
@@ -372,9 +374,10 @@ with tab2:
             st.warning("You can only store up to 5 filtered outputs.")
 
     # Display outputs side by side
-    with st.expander("Default Data", expanded=True):
+    with st.expander("Default Rankings", expanded=True):
         st.dataframe(bowl_data)
-
+    
+    with st.expander("User-Generated Rankings", expanded = True):
         for output in st.session_state.bowl_filtered_outputs:
             with st.expander(output['title'], expanded=False):
                 st.dataframe(output['data'])
