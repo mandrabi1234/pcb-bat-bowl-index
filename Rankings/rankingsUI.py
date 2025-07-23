@@ -215,8 +215,8 @@ with st.sidebar:
     with st.sidebar.container():
         st.subheader("Format Factors")
         with st.expander(f"{format_select}"):
-            t20_min_bat_ins = st.slider("Minimum Batting Innings", 0.0, 10.0, 5.0, 1.0)
-            t20_min_bwl_ins = st.slider("Minimum Bowling Innings", 0.0, 10.0, 5.0, 1.0)
+            t20_min_bat_ins = st.slider("Minimum Batting Innings", 0.0, 10.0, 0.0, 1.0)
+            t20_min_bwl_ins = st.slider("Minimum Bowling Innings", 0.0, 10.0, 0.0, 1.0)
             t20_run_val_prop = st.slider("Runs Value Total Prop", 0.0, 100.0, 60.0, 10.0)
             t20_run_avg_prop = st.slider("Runs Value Average Prop", 0.0, 100.0, 40.0, 10.0)
             t20_min_run_pctl = st.slider("Minimum Runs Percentile", 0.0, 2.0, 0.1, 0.05)
