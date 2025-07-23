@@ -14,10 +14,21 @@ def overs_to_balls(overs):
     except Exception:
         return 0
 
+def convert_if_decimal(val):
+    try:
+        if float(val) % 1 != 0:
+            return overs_to_balls(val)
+    except:
+        pass
+    return val  # leave unchanged if it's an integer or error
+
+
 def data_preprocessing(df):
     # Convert overs to balls for four-day matches
     mask = df["Format"].str.lower() == "four_day"
-    df.loc[mask, "Balls Bowled"] = df.loc[mask, "Balls Bowled"].apply(overs_to_balls)
+
+    df.loc[mask, "Balls Bowled"] = df.loc[mask, "Balls Bowled"].apply(convert_if_decimal)
+    # df.loc[mask, "Balls Bowled"] = df.loc[mask, "Balls Bowled"].apply(overs_to_balls)
 
     # Replace 'DNB', 'DNP', '*' with appropriate NaNs or zeros
     zero_map = {
