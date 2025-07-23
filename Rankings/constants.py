@@ -25,8 +25,8 @@ config = {
     #######################################
     # T20 Ranking Aggregation Proportions
 
-    "T20_MIN_NUM_BATTING_INNINGS": 5.0,
-    "T20_MIN_NUM_BOWLING_INNINGS": 5.0,
+    "T20_MIN_NUM_BATTING_INNINGS": 0.0,
+    "T20_MIN_NUM_BOWLING_INNINGS": 0.0,
 
     "T20_BATTING_RUNSVALUE_TOTAL_PROP": 60.0,
     "T20_BATTING_RUNSVALUE_AVG_PROP": 40.0,
