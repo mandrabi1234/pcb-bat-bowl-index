@@ -74,7 +74,6 @@ bowl_data = move_column(bowl_data, "Player ID", 1)
 bat_data = batting_data
 bat_data = move_column(bat_data, "Player Name", 0)
 bat_data = move_column(bat_data, "Player ID", 1)
-# bat_data = bat_data.drop(columns=["Dismissed"], inplace=True)
 print(bat_data)
 # bat_data["Player Name"] = batting_data["Player Name"]
 # bat_data["Player ID "] = batting_data["Player ID"]
@@ -356,7 +355,7 @@ with tab1:
         df_bat_rank["Batting Score"] = df_bat_rank["Batting_Combined_Score"]
         df_bat_rank = move_column(df_bat_rank, "Player Name", 0)
         df_bat_rank = move_column(df_bat_rank, "Player ID", 1)
-        df_bat_rank = df_bat_rank.drop(columns=["Dismissed"], inplace=True)
+        df_bat_rank = df_bat_rank.drop("Dismissed", axis=1)
 
         # df_bat_rank = df_bat_rank[['Player Name', 'Player ID', 'Runs Made',  'Batting Score']]
         if len(st.session_state.bat_filtered_outputs) < 5:
@@ -370,6 +369,7 @@ with tab1:
     # Display outputs side by side
     with st.expander("Default Rankings", expanded=True):
         bat_data = bat_data.drop("Dismissed", axis=1)
+
         st.dataframe(bat_data)
 
     with st.expander("User Generated Rankings", expanded = True):
