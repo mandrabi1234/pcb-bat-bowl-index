@@ -59,18 +59,27 @@ batting_data, bowling_data = generate_default_rankings( df, player_mapping)
 
 # batting_data = pd.read_csv(fr"{bat_data_input}")
 # bowling_data = pd.read_csv(fr"{bowl_data_input}")
+def move_column(df, col_name, new_index):
+    col = df.pop(col_name)
+    df.insert(new_index, col_name, col)
+    return df
 
-bowl_data = pd.DataFrame()
-bowl_data["Player Name"] = bowling_data["Player Name"]
-bowl_data["Player ID "] = bowling_data["Player ID"]
-bowl_data["Wickets Taken"] = bowling_data["Wickets Taken"]
-bowl_data["Bowling Score"] = bowling_data["Bowling_Combined_Score"]
+bowl_data = bowling_data
+bowl_data = move_column(bowl_data, "Player Name", 0)
+bowl_data = move_column(bowl_data, "Player ID", 1)
 
-bat_data = pd.DataFrame()
-bat_data["Player Name"] = batting_data["Player Name"]
-bat_data["Player ID "] = batting_data["Player ID"]
-bat_data["Runs Made"] = batting_data["Runs Made"]
-bat_data["Batting Score"] = batting_data["Batting_Combined_Score"]
+# bowl_data["Wickets Taken"] = bowling_data["Wickets Taken"]
+# bowl_data["Bowling Score"] = bowling_data["Bowling_Combined_Score"]
+
+bat_data = batting_data
+bat_data = move_column(bat_data, "Player Name", 0)
+bat_data = move_column(bat_data, "Player ID", 1)
+# bat_data = bat_data.drop(columns=["Dismissed"], inplace=True)
+print(bat_data)
+# bat_data["Player Name"] = batting_data["Player Name"]
+# bat_data["Player ID "] = batting_data["Player ID"]
+# bat_data["Runs Made"] = batting_data["Runs Made"]
+# bat_data["Batting Score"] = batting_data["Batting_Combined_Score"]
 
 data_preprocessing(df)
 
@@ -345,7 +354,11 @@ with tab1:
         )
         df_bat_rank = player_map(player_mapping, df_bat_rank, "Player Name", "Player ID")
         df_bat_rank["Batting Score"] = df_bat_rank["Batting_Combined_Score"]
-        df_bat_rank = df_bat_rank[['Player Name', 'Player ID', 'Runs Made',  'Batting Score']]
+        df_bat_rank = move_column(df_bat_rank, "Player Name", 0)
+        df_bat_rank = move_column(df_bat_rank, "Player ID", 1)
+        df_bat_rank = df_bat_rank.drop(columns=["Dismissed"], inplace=True)
+
+        # df_bat_rank = df_bat_rank[['Player Name', 'Player ID', 'Runs Made',  'Batting Score']]
         if len(st.session_state.bat_filtered_outputs) < 5:
             st.session_state.bat_filtered_outputs.append({
                 'title': title_bat or f"Output {len(st.session_state.bat_filtered_outputs) + 1}",
@@ -356,6 +369,7 @@ with tab1:
 
     # Display outputs side by side
     with st.expander("Default Rankings", expanded=True):
+        bat_data = bat_data.drop("Dismissed", axis=1)
         st.dataframe(bat_data)
 
     with st.expander("User Generated Rankings", expanded = True):
@@ -376,7 +390,9 @@ with tab2:
         
         df_bwl_rank = player_map(player_mapping, df_bwl_rank, "Player Name", "Player ID")
         df_bwl_rank["Bowling Score"] = df_bwl_rank["Bowling_Combined_Score"]
-        df_bwl_rank = df_bwl_rank[['Player Name', 'Player ID', 'Wickets Taken', 'Bowling Score']]
+        df_bwl_rank = move_column(df_bwl_rank, "Player Name", 0)
+        df_bwl_rank = move_column(df_bwl_rank, "Player ID", 1)
+        # df_bwl_rank = df_bwl_rank[['Player Name', 'Player ID', 'Wickets Taken', 'Bowling Score']]
 
         if len(st.session_state.bowl_filtered_outputs) < 5:
             st.session_state.bowl_filtered_outputs.append({
