@@ -162,7 +162,7 @@ with st.sidebar:
             config["SR_RANGE_MAX"] = st.slider("Strike Rate Range Maximum", 0.0, 3.0, 2.0, 0.25)
             config["SR_FACTOR_MIN"] = st.slider("Strike Rate Factor Minimum", 0.0, 1.0, 0.85, 0.05)
             config["SR_FACTOR_MAX"] = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, 1.25, 0.25)
-            config["FACTOR_BATTING_AVG"] = st.sidebar.slider("Batting Average Factor", 0.0, 3.0, config["FACTOR_BATTING_AVG"], 0.1)
+            config["FACTOR_BATTING_AVG"] = st.sidebar.slider("Batting Average Factor", 0.0, 4.0, 3.0, 0.5)
 
 
         with st.expander("Tournament Factors"):
@@ -203,7 +203,7 @@ with st.sidebar:
             config["ECON_RATE_RANGE_MAX"] = st.slider("Economy Rate Range Maximum", 0.0, 2.0, config["ECON_RATE_RANGE_MAX"], 0.1)
             config["ECON_RATE_FACTOR_MIN"] = st.slider("Economy Rate Factor Minimum", 0.0, 2.0, config["ECON_RATE_FACTOR_MIN"], 0.05)
             config["ECON_RATE_FACTOR_MAX"] = st.slider("Economy Rate Factor Maximum", 0.0, 2.0, config["ECON_RATE_FACTOR_MAX"], 0.05)
-            config["FACTOR_BOWLING_AVG"]= st.sidebar.slider("Bowling Average Factor", 0.0, 3.0, config["FACTOR_BOWLING_AVG"], 0.1)
+            config["FACTOR_BOWLING_AVG"]= st.sidebar.slider("Bowling Average Factor", 0.0, 4.0, 2.5, 0.5)
 
 
     with st.sidebar.container():
