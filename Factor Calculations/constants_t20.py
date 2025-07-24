@@ -65,5 +65,12 @@ config = {
     "BAT_TALENT_SPECIAL": 1.1,
     "BOWL_TALENT_SPECIAL": 1.1,
     "BAT_TALENT_DEFAULT": 1.0,
-    "BOWL_TALENT_DEFAULT": 1.0
+    "BOWL_TALENT_DEFAULT": 1.0,
+
+    # Player Averages Constants
+    "FACTOR_BATTING_AVG": 1.0,
+    "BASELINE_BATTING_AVG": 30.0,
+    "FACTOR_BOWLING_AVG": 1.0,
+    "BASELINE_BOWLING_AVG": 25.0
+
 }

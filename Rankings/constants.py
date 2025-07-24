@@ -6,6 +6,7 @@ config = {
     "BALLS_BOWLED": "Balls Bowled",
     "WICKETS_COL": "Wickets Taken",
     "RUNS_GIVEN": "Runs Given",
+    "WICKETS_TAKEN": "Wickets Taken",
 
     "RUN_AVG_COL": "Run_AVG",
     "RUNVALUE_COL": "RunValues",

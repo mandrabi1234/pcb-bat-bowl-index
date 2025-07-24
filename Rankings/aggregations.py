@@ -46,11 +46,9 @@ def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_
     return df_filtered
 
 
-def add_wicketvalues(df, wickets_avg_col, wicketvalue_col, wicketvalue_avg_col, player_col, total_played_col, balls_bowled, wickets_col, factor_cols):
-    """Aggregate the "value of wickets" for each player."""
-    
-    # Unpack only the column names from the (column_name, weight) tuples
-    cols = [col_name for col_name, _ in factor_cols] + [player_col, wickets_col, balls_bowled]
+def add_wicketvalues(df, wickets_avg_col, wicketvalue_col, wicketvalue_avg_col, player_col, total_played_col, balls_bowled, wickets_col, runs_given_col, factor_cols, config):
+    """Aggregate the value of wickets for each player and include bowling average."""
+    cols = [col_name for col_name, _ in factor_cols] + [player_col, wickets_col, balls_bowled, runs_given_col]
     df_filtered = df[cols].copy()
     df_filtered[wicketvalue_col] = df_filtered[wickets_col]
 
@@ -61,12 +59,22 @@ def add_wicketvalues(df, wickets_avg_col, wicketvalue_col, wicketvalue_avg_col, 
         (df_filtered[balls_bowled].isna() | (df_filtered[balls_bowled] == 0)), 0, 1
     )
 
-    cols_to_sum = [wickets_col, wicketvalue_col, total_played_col]
+    cols_to_sum = [wickets_col, wicketvalue_col, total_played_col, runs_given_col]
     df_filtered[wicketvalue_col] = pd.to_numeric(df_filtered[wicketvalue_col], errors='coerce')
 
     df_filtered = df_filtered.groupby(player_col)[cols_to_sum].sum(numeric_only=True).reset_index()
 
     df_filtered[wicketvalue_avg_col] = df_filtered[wicketvalue_col] / df_filtered[total_played_col]
     df_filtered[wickets_avg_col] = df_filtered[wickets_col] / df_filtered[total_played_col]
+
+    # 🔥 Bowling Average = Runs Given / Wickets Taken
+    df_filtered["Bowling_Avg"] = df_filtered[runs_given_col] / df_filtered[wickets_col].replace(0, np.nan)
+
+    # Normalize: lower average = better
+    df_filtered["Bowling_Avg_Factor"] = config["BASELINE_BOWLING_AVG"] / df_filtered["Bowling_Avg"]
+    df_filtered["Bowling_Avg_Factor"] = df_filtered["Bowling_Avg_Factor"].fillna(1.0)
+
+    # Multiply into existing weighted WicketValue
+    df_filtered[wicketvalue_col] *= df_filtered["Bowling_Avg_Factor"] * config["FACTOR_BOWLING_AVG"]
 
     return df_filtered

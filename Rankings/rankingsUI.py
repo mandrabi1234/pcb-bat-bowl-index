@@ -162,6 +162,8 @@ with st.sidebar:
             config["SR_RANGE_MAX"] = st.slider("Strike Rate Range Maximum", 0.0, 3.0, 2.0, 0.25)
             config["SR_FACTOR_MIN"] = st.slider("Strike Rate Factor Minimum", 0.0, 1.0, 0.85, 0.05)
             config["SR_FACTOR_MAX"] = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, 1.25, 0.25)
+            config["FACTOR_BATTING_AVG"] = st.sidebar.slider("Batting Average Factor", 0.0, 3.0, config["FACTOR_BATTING_AVG"], 0.1)
+
 
         with st.expander("Tournament Factors"):
             config["TOURNAMENT_FACTOR_DEFAULT"] = st.slider("Tournament Factor Default", 0.0, 1.0, 1.0, 0.1)
@@ -201,6 +203,8 @@ with st.sidebar:
             config["ECON_RATE_RANGE_MAX"] = st.slider("Economy Rate Range Maximum", 0.0, 2.0, config["ECON_RATE_RANGE_MAX"], 0.1)
             config["ECON_RATE_FACTOR_MIN"] = st.slider("Economy Rate Factor Minimum", 0.0, 2.0, config["ECON_RATE_FACTOR_MIN"], 0.05)
             config["ECON_RATE_FACTOR_MAX"] = st.slider("Economy Rate Factor Maximum", 0.0, 2.0, config["ECON_RATE_FACTOR_MAX"], 0.05)
+            config["FACTOR_BOWLING_AVG"]= st.sidebar.slider("Bowling Average Factor", 0.0, 3.0, config["FACTOR_BOWLING_AVG"], 0.1)
+
 
     with st.sidebar.container():
         st.subheader("Special Factors")
@@ -279,6 +283,12 @@ df_bat_agg = agg.add_runvalues(
     batting_factors
 )
 
+# 🔥 Batting Average Factor
+df_bat_agg["Batting_Avg_Factor"] = df_bat_agg[rankings_config["RUN_AVG_COL"]] / config["BASELINE_BATTING_AVG"]
+df_bat_agg["Batting_Avg_Factor"] = df_bat_agg["Batting_Avg_Factor"].fillna(1.0)
+df_bat_agg[rankings_config["RUNVALUE_COL"]] *= df_bat_agg["Batting_Avg_Factor"] * config["FACTOR_BATTING_AVG"]
+
+
 #Bowling Factors Calculations
 
 ## BOWLING
@@ -303,16 +313,19 @@ bowling_factors = [
 # bowling_factors = [config["FACTOR_ECON_RATE"], config["FACTOR_WICKETS_BATTER_POS_DISMISSED"], config["FACTOR_TOURNAMENT"], config["FACTOR_OPP_QUALITY"], config["FACTOR_SPECIAL_BOWL_TALENT"]]
 print("---Bowling Factors---\n", bowling_factors)
 df_bowl_agg = agg.add_wicketvalues(
-    df, 
-    rankings_config["WICKETS_AVG_COL"], 
-    rankings_config["WICKETVALUE_COL"], 
-    rankings_config["WICKETVALUE_AVG_COL"], 
-    rankings_config["PLAYER_ID"], 
-    rankings_config["BOWLING_INNINGS_PLAYED"], 
-   rankings_config["BALLS_BOWLED"], 
-    rankings_config["WICKETS_COL"], 
-    bowling_factors
+    df,
+    rankings_config["WICKETS_AVG_COL"],
+    rankings_config["WICKETVALUE_COL"],
+    rankings_config["WICKETVALUE_AVG_COL"],
+    rankings_config["PLAYER_ID"],
+    rankings_config["BOWLING_INNINGS_PLAYED"],
+    rankings_config["BALLS_BOWLED"],
+    rankings_config["WICKETS_TAKEN"],
+    rankings_config["RUNS_GIVEN"],       # 🆕 New input column
+    bowling_factors,
+    config                               # 🆕 Pass entire config for factor use
 )
+
 # print(df_bowl_agg)
 
 # Bowling Rankings
