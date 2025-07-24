@@ -283,7 +283,7 @@ df_bat_agg = agg.add_runvalues(
     batting_factors
 )
 
-# 🔥 Batting Average Factor
+# Batting Average Factor
 df_bat_agg["Batting_Avg_Factor"] = df_bat_agg[rankings_config["RUN_AVG_COL"]] / config["BASELINE_BATTING_AVG"]
 df_bat_agg["Batting_Avg_Factor"] = df_bat_agg["Batting_Avg_Factor"].fillna(1.0)
 df_bat_agg[rankings_config["RUNVALUE_COL"]] *= df_bat_agg["Batting_Avg_Factor"] * config["FACTOR_BATTING_AVG"]
