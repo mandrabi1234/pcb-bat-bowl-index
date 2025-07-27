@@ -71,6 +71,15 @@ config = {
     "FACTOR_BATTING_AVG": 1.0,
     "BASELINE_BATTING_AVG": 3.0,
     "FACTOR_BOWLING_AVG": 1.0,
-    "BASELINE_BOWLING_AVG": 2.5
+    "BASELINE_BOWLING_AVG": 2.5,
+
+    # # Batting threshold
+    # "MIN_RUNS": 200,
+    # "RUNS_WEIGHT_BELOW_MIN": 0.80,
+
+    # # Bowling threshold
+    # "MIN_WICKETS": 20,
+    # "WICKETS_WEIGHT_BELOW_MIN": 0.80
+
 
 }
