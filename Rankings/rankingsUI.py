@@ -170,8 +170,8 @@ with st.sidebar:
             config["SR_RANGE_MAX"] = st.slider("Strike Rate Range Maximum", 0.0, 3.0, 2.0, 0.25)
             config["SR_FACTOR_MIN"] = st.slider("Strike Rate Factor Minimum", 0.0, 1.0, 0.85, 0.05)
             config["SR_FACTOR_MAX"] = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, 1.25, 0.25)
-            config["BASELINE_BATTING_AVG"] = st.sidebar.slider("Batting Average Factor", 0.0, 4.0, 3.0, 0.5)
-            config["FACTOR_BATTING_AVG"]= st.sidebar.slider("Batting Average Factor Baseline", 0.0, 2.0, 1.0,0.5)
+            config["T20_BATTING_RUNSVALUE_TOTAL_PROP"] = st.sidebar.slider("Batting Average Factor", 0, 100, 40, 10)
+            rankings_config["T20_BATTING_RUNSVALUE_AVG_PROP"]= st.sidebar.slider("Batting Average Factor Baseline", 0, 100, 60,10)
 
 
         with st.expander("Tournament Factors"):
@@ -212,8 +212,8 @@ with st.sidebar:
             config["ECON_RATE_RANGE_MAX"] = st.slider("Economy Rate Range Maximum", 0.0, 2.0, config["ECON_RATE_RANGE_MAX"], 0.1)
             config["ECON_RATE_FACTOR_MIN"] = st.slider("Economy Rate Factor Minimum", 0.0, 2.0, config["ECON_RATE_FACTOR_MIN"], 0.05)
             config["ECON_RATE_FACTOR_MAX"] = st.slider("Economy Rate Factor Maximum", 0.0, 2.0, config["ECON_RATE_FACTOR_MAX"], 0.05)
-            config["BASELINE_BOWLING_AVG"]= st.sidebar.slider("Bowling Average Factor", 0.0, 4.0, 2.5, 0.5)
-            config["FACTOR_BOWLING_AVG"]= st.sidebar.slider("Bowling Average Factor Baseline", 0.0, 2.0, 1.0, 0.5)
+            config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"]= st.sidebar.slider("Bowling Average Factor", 0, 100, 40, 10)
+            config["T20_BOWLING_WICKETSVALUE_AVG_PROP"]= st.sidebar.slider("Bowling Average Factor Baseline", 0, 100, 60, 10)
 
 
 
@@ -294,12 +294,12 @@ df_bat_agg = agg.add_runvalues(
     batting_factors
 )
 
-# Batting Average Factor
-df_bat_agg["Batting_Avg_Factor"] = df_bat_agg[rankings_config["RUN_AVG_COL"]] / config["BASELINE_BATTING_AVG"]
-print("--BATTING AVERAGE CHECK")
-print(df_bat_agg["Batting_Avg_Factor"])
-df_bat_agg["Batting_Avg_Factor"] = df_bat_agg["Batting_Avg_Factor"].fillna(1.0)
-df_bat_agg[rankings_config["RUNVALUE_COL"]] *= df_bat_agg["Batting_Avg_Factor"] * config["FACTOR_BATTING_AVG"]
+# # Batting Average Factor
+# df_bat_agg["Batting_Avg_Factor"] = df_bat_agg[rankings_config["RUN_AVG_COL"]] / config["BASELINE_BATTING_AVG"]
+# print("--BATTING AVERAGE CHECK")
+# print(df_bat_agg["Batting_Avg_Factor"])
+# df_bat_agg["Batting_Avg_Factor"] = df_bat_agg["Batting_Avg_Factor"].fillna(1.0)
+# df_bat_agg[rankings_config["RUNVALUE_COL"]] *= df_bat_agg["Batting_Avg_Factor"] * config["FACTOR_BATTING_AVG"]
 
 
 #Bowling Factors Calculations
@@ -377,7 +377,8 @@ with tab1:
 
         st.dataframe(bat_data)
 
-    with st.expander("User Generated Rankings", expanded = True):
+    with st.container():
+        st.write("User-Generated Rankings")
         for output in st.session_state.bat_filtered_outputs:
             with st.expander(output['title'], expanded=False):
                 st.dataframe(output['data'])            
@@ -411,7 +412,8 @@ with tab2:
     with st.expander("Default Rankings", expanded=True):
         st.dataframe(bowl_data)
     
-    with st.expander("User-Generated Rankings", expanded = True):
+    with st.container():
+        st.write("User-Generated Rankings")
         for output in st.session_state.bowl_filtered_outputs:
             with st.expander(output['title'], expanded=False):
                 st.dataframe(output['data'])
