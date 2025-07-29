@@ -174,8 +174,13 @@ with st.sidebar:
         with st.expander("Average Factors"):
             config["FACTOR_BATTING_AVG"]= st.slider("Batting Average Factor", 0.0, 2.0, 1.0, .05)
             config["BASELINE_BATTING_AVG"]= st.slider("Baseline Batting Average", 0, 100, 25, 5)
-            rankings_config["T20_BOWLING_RUNSVALUE_TOTAL_PROP"]= st.slider("Total Runs Value Weight", 0, 100, 40, 10)
-            rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"]= st.slider("Average Value Runs Weight", 0, 100, 60, 10)
+            rankings_config["T20_BOWLING_RUNSVALUE_TOTAL_PROP"] = st.slider("Total Runs Value Weight", 0, 100, 60, 5)
+            rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"] = 100 - rankings_config["T20_BOWLING_RUNSVALUE_TOTAL_PROP"]
+
+            st.markdown(f"Average Value Runs Weight: **{rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"]}**")
+
+            # rankings_config["T20_BOWLING_RUNSVALUE_TOTAL_PROP"]= st.slider("Total Runs Value Weight", 0, 100, 40, 10)
+            # rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"]= st.slider("Average Value Runs Weight", 0, 100, 60, 10)
 
 
         with st.expander("Tournament Factors"):
@@ -371,7 +376,7 @@ with tab1:
         df_bat_rank["Batting Score"] = df_bat_rank["Batting_Combined_Score"]
         df_bat_rank = move_column(df_bat_rank, "Player Name", 0)
         df_bat_rank = move_column(df_bat_rank, "Player ID", 1)
-        df_bat_rank = df_bat_rank.drop("Dismissed", axis=1)
+        # df_bat_rank = df_bat_rank.drop("Dismissed", axis=1)
 
         # df_bat_rank = df_bat_rank[['Player Name', 'Player ID', 'Runs Made',  'Batting Score']]
         if len(st.session_state.bat_filtered_outputs) < 5:
