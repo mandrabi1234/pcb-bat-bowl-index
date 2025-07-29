@@ -383,7 +383,7 @@ with tab1:
         # df_bat_rank = df_bat_rank[['Player Name', 'Player ID', 'Runs Made',  'Batting Score']]
         if len(st.session_state.bat_filtered_outputs) < 5:
             st.session_state.bat_filtered_outputs.append({
-                'title': title_bat or f"Output {len(st.session_state.bat_filtered_outputs) + 1}",
+                'title': f"{title_bat} ({', '.join(format_select)})" or f"Output {len(st.session_state.bat_filtered_outputs) + 1} - {format_select} Data",
                 'data': df_bat_rank
             })
         else:
@@ -418,7 +418,7 @@ with tab2:
 
         if len(st.session_state.bowl_filtered_outputs) < 5:
             st.session_state.bowl_filtered_outputs.append({
-                'title': title_bat or f"Output {len(st.session_state.bowl_filtered_outputs) + 1}",
+                'title': f"{title_bat} ({', '.join(format_select)})" or f"Output {len(st.session_state.bowl_filtered_outputs) + 1} - {format_select} Data",
                 'data': df_bwl_rank
             })
         else:
