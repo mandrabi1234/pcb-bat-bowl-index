@@ -224,8 +224,10 @@ with st.sidebar:
         with st.expander("Average Factors"):
             config["FACTOR_BOWLING_AVG"]= st.slider("Bowling Average Factor", 0.0, 2.0, 1.0, .05)
             config["BASELINE_BOWLING_AVG"]= st.slider("Baseline Bowling Average", 0, 100, 30, 5)
-            rankings_config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"]= st.slider("Total Wicket Value Weight", 0, 100, 30, 10)
-            rankings_config["T20_BOWLING_WICKETSVALUE_AVG_PROP"]= st.slider("Average Value Wicket Weight", 0, 100, 70, 10)
+            rankings_config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"] = st.slider("Total Wickets Value Weight", 0, 100, 70, 5)
+            rankings_config["T20_BOWLING_WICKETSVALUE_AVG_PROP"] = 100 - rankings_config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"]
+
+            st.markdown(f"Average Value Wickets Weight: **{rankings_config["T20_BOWLING_WICKETSVALUE_AVG_PROP"]}**")
 
 
 
