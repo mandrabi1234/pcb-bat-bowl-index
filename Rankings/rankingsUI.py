@@ -383,8 +383,6 @@ with tab1:
 
     # Display outputs side by side
     with st.expander("Default Rankings", expanded=True):
-        bat_data = bat_data.drop("Dismissed", axis=1)
-
         st.dataframe(bat_data)
 
     with st.container():
