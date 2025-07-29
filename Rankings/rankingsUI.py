@@ -88,6 +88,7 @@ def player_map(df_map, df_input, player_name_col, player_id_col):
     df_output = df_input.loc[:, [player_name_col] + [col for col in df_input.columns if col != player_name_col]]
     return df_output
 
+print("---Dismissal per Player---\n", df.groupby("Player ID")["Dismissed"].sum().reset_index())
 
 
 # def filter_and_calculate_bat(df_input, sr_weight, tournament_weight, opp_weight, bat_pos_weight, spec_bat_talent_weight):
@@ -164,41 +165,44 @@ with st.sidebar:
     with st.sidebar.container():
         st.subheader("Batting Factors")
         with st.expander("Strike Rate"):
-            config["SR_FACTOR_DEFAULT"] = st.slider("Strike Rate Default", 0.0, 1.0, 1.0, 0.15)
-            config["SR_BASELINE"] = st.slider("Strike Rate Baseline", 0.0, 2.0, 1.1, 0.15)
-            config["SR_RANGE_MIN"] = st.slider("Strike Rate Range Minimum", 0.0, 1.0, 0.5, 0.1)
-            config["SR_RANGE_MAX"] = st.slider("Strike Rate Range Maximum", 0.0, 3.0, 2.0, 0.25)
+            config["SR_FACTOR_DEFAULT"] = st.slider("Strike Rate Default", 0.0, 1.0, 1.0, 0.05)
+            config["SR_BASELINE"] = st.slider("Strike Rate Baseline", 0.0, 2.0, 1.1, 0.05)
+            config["SR_RANGE_MIN"] = st.slider("Strike Rate Range Minimum", 0.0, 1.0, 0.5, 0.05)
+            config["SR_RANGE_MAX"] = st.slider("Strike Rate Range Maximum", 0.0, 3.0, 2.0, 0.05)
             config["SR_FACTOR_MIN"] = st.slider("Strike Rate Factor Minimum", 0.0, 1.0, 0.85, 0.05)
-            config["SR_FACTOR_MAX"] = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, 1.25, 0.25)
-            config["T20_BATTING_RUNSVALUE_TOTAL_PROP"] = st.sidebar.slider("Batting Average Factor", 0, 100, 40, 10)
-            rankings_config["T20_BATTING_RUNSVALUE_AVG_PROP"]= st.sidebar.slider("Batting Average Factor Baseline", 0, 100, 60,10)
+            config["SR_FACTOR_MAX"] = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, 1.25, 0.05)
+        with st.expander("Average Factors"):
+            config["FACTOR_BATTING_AVG"]= st.slider("Batting Average Factor", 0.0, 2.0, 1.0, .05)
+            config["BASELINE_BATTING_AVG"]= st.slider("Baseline Batting Average", 0, 100, 25, 5)
+            rankings_config["T20_BOWLING_RUNSVALUE_TOTAL_PROP"]= st.slider("Total Runs Value Weight", 0, 100, 40, 10)
+            rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"]= st.slider("Average Value Runs Weight", 0, 100, 60, 10)
 
 
         with st.expander("Tournament Factors"):
-            config["TOURNAMENT_FACTOR_DEFAULT"] = st.slider("Tournament Factor Default", 0.0, 1.0, 1.0, 0.1)
-            config["TOURNAMENT_FACTOR_DICT"]["psl"] = st.slider("PSL", 0.0, 2.0, 1.2, 0.1)
-            config["TOURNAMENT_FACTOR_DICT"]["champions t20"] = st.slider("Champions Cup T20", 0.0, 2.0, 1.0, 0.1)
-            config["TOURNAMENT_FACTOR_DICT"]["national t20"] = st.slider("National T20", 0.0, 1.0, 0.8, 0.1)
+            config["TOURNAMENT_FACTOR_DEFAULT"] = st.slider("Tournament Factor Default", 0.0, 1.0, 1.0, 0.05)
+            config["TOURNAMENT_FACTOR_DICT"]["psl"] = st.slider("PSL", 0.0, 2.0, 1.2, 0.05)
+            config["TOURNAMENT_FACTOR_DICT"]["champions t20"] = st.slider("Champions Cup T20", 0.0, 2.0, 1.0, 0.05)
+            config["TOURNAMENT_FACTOR_DICT"]["national t20"] = st.slider("National T20", 0.0, 1.0, 0.8, 0.05)
             config["TOURNAMENT_FACTOR_DICT"]["champions one day"] = st.slider("Champions ODI", 0.0, 2.0, 1.05, 0.05)
-            config["TOURNAMENT_FACTOR_DICT"]["president's cup one-day"] = st.slider("President's Cup ODI", 0.0, 2.0, 1.0, 0.1)
+            config["TOURNAMENT_FACTOR_DICT"]["president's cup one-day"] = st.slider("President's Cup ODI", 0.0, 2.0, 1.0, 0.05)
             config["TOURNAMENT_FACTOR_DICT"]["qat"] = st.slider("QAT", 0.0, 2.0, 1.05, 0.05)
-            config["TOURNAMENT_FACTOR_DICT"]["president's trophy grade-I"] = st.slider("President's Trophy Grade-I", 0.0, 2.0, 1.0, 0.1)
+            config["TOURNAMENT_FACTOR_DICT"]["president's trophy grade-I"] = st.slider("President's Trophy Grade-I", 0.0, 2.0, 1.0, 0.05)
         
         with st.expander("Opponent Quality Factors"):
             config["OPP_QUALITY_FACTOR_DEFAULT"] = st.slider("Opponent Quality Default", 0.0, 2.0, 1.0, 0.1)
-            config["OPP_QUALITY_MAX_RANK_DIFF"] = st.slider("Opp Quality Max Rank Diff", 0.0, 5.0, 4.0, 0.5)
-            config["OPP_QUALITY_FACTOR_MIN"] = st.slider("Opp Quality Factor Min", 0.0, 1.0, 0.8, 0.1)
-            config["OPP_QUALITY_FACTOR_MAX"] = st.slider("Opp Quality Factor Max", 0.0, 2.0, 1.2, 0.1)
+            config["OPP_QUALITY_MAX_RANK_DIFF"] = st.slider("Opp Quality Max Rank Diff", 0.0, 10.0, 4.0, 0.5)
+            config["OPP_QUALITY_FACTOR_MIN"] = st.slider("Opp Quality Factor Min", 0.0, 1.0, 0.8, 0.05)
+            config["OPP_QUALITY_FACTOR_MAX"] = st.slider("Opp Quality Factor Max", 0.0, 2.0, 1.2, 0.05)
 
         with st.expander("Batting Position Factors"):
-            config["BATTING_POS_DEFAULT"] = st.slider("Batting Position Default", 0.0, 2.0, config["BATTING_POS_DEFAULT"], 0.1)
+            config["BATTING_POS_DEFAULT"] = st.slider("Batting Position Default", 0.0, 2.0, config["BATTING_POS_DEFAULT"], 0.05)
             config["POS_1_3"] = st.slider("Batting Position 1-3", 0.0, 2.0, config["POS_1_3"], 0.05)
             config["POS_4_5"] = st.slider("Batting Position 4-5", 0.0, 2.0, config["POS_4_5"], 0.05)
             config["POS_6_8"] = st.slider("Batting Position 6-8", 0.0, 2.0, config["POS_6_8"], 0.05)
             config["POS_9_11"] = st.slider("Batting Position 9-11", 0.0, 2.0, config["POS_9_11"], 0.05)
 
         with st.expander("Wicket Position Factors"):
-            config["WICKET_BAT_POS_DEFAULT"] = st.slider("Wicket Position Default", 0.0, 2.0, config["WICKET_BAT_POS_DEFAULT"], 0.1)
+            config["WICKET_BAT_POS_DEFAULT"] = st.slider("Wicket Position Default", 0.0, 2.0, config["WICKET_BAT_POS_DEFAULT"], 0.05)
             for i in range(1, 12):
                 config["WICKET_BAT_POS_FACTOR_DICT"][i] = st.slider(f"Wicket Position {i}", 0.0, 2.0, config["WICKET_BAT_POS_FACTOR_DICT"][i], 0.05)
 
@@ -206,14 +210,17 @@ with st.sidebar:
     with st.sidebar.container():
         st.subheader("Bowling Factors")
         with st.expander("Economy Rate Factors"): 
-            config["ECON_RATE_FACTOR_DEFAULT"] = st.slider("Economy Rate Default", 0.0, 2.0, config["ECON_RATE_FACTOR_DEFAULT"], 0.1)
-            config["ECON_RATE_BASELINE"] = st.slider("Economy Rate Baseline", 0.0, 2.0, config["ECON_RATE_BASELINE"], 0.1)
-            config["ECON_RATE_RANGE_MIN"] = st.slider("Economy Rate Range Minimum", 0.0, 1.0, config["ECON_RATE_RANGE_MIN"], 0.1)
-            config["ECON_RATE_RANGE_MAX"] = st.slider("Economy Rate Range Maximum", 0.0, 2.0, config["ECON_RATE_RANGE_MAX"], 0.1)
+            config["ECON_RATE_FACTOR_DEFAULT"] = st.slider("Economy Rate Default", 0.0, 2.0, config["ECON_RATE_FACTOR_DEFAULT"], 0.05)
+            config["ECON_RATE_BASELINE"] = st.slider("Economy Rate Baseline", 0.0, 2.0, config["ECON_RATE_BASELINE"], 0.05)
+            config["ECON_RATE_RANGE_MIN"] = st.slider("Economy Rate Range Minimum", 0.0, 1.0, config["ECON_RATE_RANGE_MIN"], 0.05)
+            config["ECON_RATE_RANGE_MAX"] = st.slider("Economy Rate Range Maximum", 0.0, 2.0, config["ECON_RATE_RANGE_MAX"], 0.05)
             config["ECON_RATE_FACTOR_MIN"] = st.slider("Economy Rate Factor Minimum", 0.0, 2.0, config["ECON_RATE_FACTOR_MIN"], 0.05)
             config["ECON_RATE_FACTOR_MAX"] = st.slider("Economy Rate Factor Maximum", 0.0, 2.0, config["ECON_RATE_FACTOR_MAX"], 0.05)
-            config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"]= st.sidebar.slider("Bowling Average Factor", 0, 100, 40, 10)
-            config["T20_BOWLING_WICKETSVALUE_AVG_PROP"]= st.sidebar.slider("Bowling Average Factor Baseline", 0, 100, 60, 10)
+        with st.expander("Average Factors"):
+            config["FACTOR_BOWLING_AVG"]= st.slider("Bowling Average Factor", 0.0, 2.0, 1.0, .05)
+            config["BASELINE_BOWLING_AVG"]= st.slider("Baseline Bowling Average", 0, 100, 30, 5)
+            rankings_config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"]= st.slider("Total Wicket Value Weight", 0, 100, 30, 10)
+            rankings_config["T20_BOWLING_WICKETSVALUE_AVG_PROP"]= st.slider("Average Value Wicket Weight", 0, 100, 70, 10)
 
 
 
@@ -282,6 +289,8 @@ batting_factors = [
 #     config["FACTOR_SPECIAL_BAT_TALENT"]
 # ]
 print("---Batting Factors---\n", batting_factors)
+print("---DataFrame---\n", df)
+print("---Dismissal per Player---\n", df.groupby("Player ID")["Dismissed"].sum().reset_index())
 df_bat_agg = agg.add_runvalues(
     df,
     rankings_config["RUN_AVG_COL"], 
@@ -291,7 +300,8 @@ df_bat_agg = agg.add_runvalues(
     rankings_config["PLAYER_ID"], 
     rankings_config["RUNS_MADE"], 
     rankings_config["DISMISSED_COL"],
-    batting_factors
+    batting_factors,
+    config
 )
 
 # # Batting Average Factor
@@ -393,7 +403,7 @@ with tab2:
             rankings_config["WICKETVALUE_COL"],
             rankings_config["WICKETVALUE_AVG_COL"]
         )
-        
+        print(df_bwl_rank)
         df_bwl_rank = player_map(player_mapping, df_bwl_rank, "Player Name", "Player ID")
         df_bwl_rank["Bowling Score"] = df_bwl_rank["Bowling_Combined_Score"]
         df_bwl_rank = move_column(df_bwl_rank, "Player Name", 0)

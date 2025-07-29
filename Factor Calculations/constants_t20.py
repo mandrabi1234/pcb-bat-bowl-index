@@ -71,7 +71,7 @@ config = {
     "FACTOR_BATTING_AVG": 1.0,
     "BASELINE_BATTING_AVG": 30,
     "FACTOR_BOWLING_AVG": 1.0,
-    "BASELINE_BOWLING_AVG": 25,
+    "BASELINE_BOWLING_AVG": 25
 
     # # Batting threshold
     # "MIN_RUNS": 200,

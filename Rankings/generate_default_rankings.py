@@ -60,7 +60,8 @@ def generate_default_rankings(data_path, mapping_path, format_filter="t20"):
         rankings_config["PLAYER_ID"], 
         rankings_config["RUNS_MADE"], 
         rankings_config["DISMISSED_COL"], 
-        batting_factors
+        batting_factors,
+        config
     )
 
     # # 🔥 Batting Average Factor = (Run Avg / Baseline)

@@ -42,16 +42,10 @@ def batting_rankings(df, runs_col, runs_avg_col):
     df_filtered = standardize_vals(
         df_filtered, runs_avg_col, new_runs_avg_col, rankings_config["T20_RUNS_MIN_PERCENTILE"], rankings_config["T20_RUNS_MAX_PERCENTILE"])
     
-    # Combine.
     df_filtered[rankings_config["BATTING_COMBINED_SCORE"]] = (
-        (rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"] * df_filtered[new_runs_col]) +
+        (rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"] * df_filtered[new_runs_col])+
         (rankings_config["T20_BATTING_RUNSVALUE_AVG_PROP"] * df_filtered[new_runs_avg_col])
-    )
-
-    # Normalize combined score so top player has score = 100
-    max_score = df_filtered[rankings_config["BATTING_COMBINED_SCORE"]].max()
-    df_filtered[rankings_config["BATTING_COMBINED_SCORE"]] = (
-        df_filtered[rankings_config["BATTING_COMBINED_SCORE"]] / max_score * 100
+        # factor_weights.get("Factor_Runs_Per_Dismissal", 1.0) * df_filtered["Factor_Runs_Per_Dismissal"]
     )
 
     df_filtered[rankings_config["BATTING_RANKING"]] = df_filtered[rankings_config["BATTING_COMBINED_SCORE"]].rank(method='dense', ascending=False)

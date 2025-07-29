@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 
-def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_col, player_col, runs_col, dismissed_col, factor_cols):
+def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_col, player_col, runs_col, dismissed_col, factor_cols, config):
     """Aggregate the "value of runs" for each player.
 
     Args:
@@ -39,8 +39,18 @@ def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_
         dismissed_col] = 1.0
     
     # Also add the average columns.
-    df_filtered[runvalue_avg_col] = df_filtered[runvalue_col] / df_filtered[total_played_col]
-    df_filtered[run_avg_col] = df_filtered[runs_col] / df_filtered[total_played_col]
+    df_filtered[runvalue_avg_col] = df_filtered[runvalue_col] / df_filtered[dismissed_col]
+    df_filtered[run_avg_col] = df_filtered[runs_col] / df_filtered[dismissed_col]
+
+    # 🔥 Bowling Average = Runs Given / Wickets Taken
+    df_filtered["Batting_Avg"] = df_filtered[runs_col] / df_filtered[dismissed_col].replace(0, np.nan)
+
+    # Normalize: lower average = better
+    df_filtered["Batting_Avg_Factor"] = config["BASELINE_BATTING_AVG"] / df_filtered["Batting_Avg"]
+    df_filtered["Batting_Avg_Factor"] = df_filtered["Batting_Avg_Factor"].fillna(1.0)
+
+    # Multiply into existing weighted WicketValue
+    df_filtered[runvalue_col] *= df_filtered["Batting_Avg_Factor"] * config["FACTOR_BATTING_AVG"]
 
 
     return df_filtered
@@ -64,17 +74,17 @@ def add_wicketvalues(df, wickets_avg_col, wicketvalue_col, wicketvalue_avg_col, 
 
     df_filtered = df_filtered.groupby(player_col)[cols_to_sum].sum(numeric_only=True).reset_index()
 
-    df_filtered[wicketvalue_avg_col] = df_filtered[wicketvalue_col] / df_filtered[total_played_col]
-    df_filtered[wickets_avg_col] = df_filtered[wickets_col] / df_filtered[total_played_col]
+    df_filtered[wicketvalue_avg_col] = df_filtered[wicketvalue_col] / df_filtered[runs_given_col]
+    df_filtered[wickets_avg_col] = df_filtered[wickets_col] / df_filtered[runs_given_col]
 
-    # # 🔥 Bowling Average = Runs Given / Wickets Taken
-    # df_filtered["Bowling_Avg"] = df_filtered[runs_given_col] / df_filtered[wickets_col].replace(0, np.nan)
+    # 🔥 Bowling Average = Runs Given / Wickets Taken
+    df_filtered["Bowling_Avg"] = df_filtered[runs_given_col] / df_filtered[wickets_col].replace(0, np.nan)
 
-    # # Normalize: lower average = better
-    # df_filtered["Bowling_Avg_Factor"] = config["BASELINE_BOWLING_AVG"] / df_filtered["Bowling_Avg"]
-    # df_filtered["Bowling_Avg_Factor"] = df_filtered["Bowling_Avg_Factor"].fillna(1.0)
+    # Normalize: lower average = better
+    df_filtered["Bowling_Avg_Factor"] = config["BASELINE_BOWLING_AVG"] / df_filtered["Bowling_Avg"]
+    df_filtered["Bowling_Avg_Factor"] = df_filtered["Bowling_Avg_Factor"].fillna(1.0)
 
-    # # Multiply into existing weighted WicketValue
-    # df_filtered[wicketvalue_col] *= df_filtered["Bowling_Avg_Factor"] * config["FACTOR_BOWLING_AVG"]
+    # Multiply into existing weighted WicketValue
+    df_filtered[wicketvalue_col] *= df_filtered["Bowling_Avg_Factor"] * config["FACTOR_BOWLING_AVG"]
 
     return df_filtered
