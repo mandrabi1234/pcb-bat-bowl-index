@@ -74,7 +74,7 @@ bowl_data = move_column(bowl_data, "Player ID", 1)
 bat_data = batting_data
 bat_data = move_column(bat_data, "Player Name", 0)
 bat_data = move_column(bat_data, "Player ID", 1)
-print(bat_data)
+# print("---Bat Data---\n", bat_data)
 # bat_data["Player Name"] = batting_data["Player Name"]
 # bat_data["Player ID "] = batting_data["Player ID"]
 # bat_data["Runs Made"] = batting_data["Runs Made"]
@@ -88,7 +88,7 @@ def player_map(df_map, df_input, player_name_col, player_id_col):
     df_output = df_input.loc[:, [player_name_col] + [col for col in df_input.columns if col != player_name_col]]
     return df_output
 
-print("---Dismissal per Player---\n", df.groupby("Player ID")["Dismissed"].sum().reset_index())
+# print("---Dismissal per Player---\n", df.groupby("Player ID")["Dismissed"].sum().reset_index())
 
 
 # def filter_and_calculate_bat(df_input, sr_weight, tournament_weight, opp_weight, bat_pos_weight, spec_bat_talent_weight):
@@ -287,10 +287,10 @@ batting_factors = [
 #     config["FACTOR_OPP_QUALITY"],
 #     config["FACTOR_BAT_POSITION"],
 #     config["FACTOR_SPECIAL_BAT_TALENT"]
-# ]
-print("---Batting Factors---\n", batting_factors)
-print("---DataFrame---\n", df)
-print("---Dismissal per Player---\n", df.groupby("Player ID")["Dismissed"].sum().reset_index())
+# # ]
+# print("---Batting Factors---\n", batting_factors)
+# print("---DataFrame---\n", df)
+# print("---Dismissal per Player---\n", df.groupby("Player Name")["Dismissed"].sum().reset_index())
 df_bat_agg = agg.add_runvalues(
     df,
     rankings_config["RUN_AVG_COL"], 
@@ -334,7 +334,7 @@ bowling_factors = [
 ]
 
 # bowling_factors = [config["FACTOR_ECON_RATE"], config["FACTOR_WICKETS_BATTER_POS_DISMISSED"], config["FACTOR_TOURNAMENT"], config["FACTOR_OPP_QUALITY"], config["FACTOR_SPECIAL_BOWL_TALENT"]]
-print("---Bowling Factors---\n", bowling_factors)
+# print("---Bowling Factors---\n", bowling_factors)
 df_bowl_agg = agg.add_wicketvalues(
     df,
     rankings_config["WICKETS_AVG_COL"],
@@ -403,7 +403,7 @@ with tab2:
             rankings_config["WICKETVALUE_COL"],
             rankings_config["WICKETVALUE_AVG_COL"]
         )
-        print(df_bwl_rank)
+        # print(df_bwl_rank)
         df_bwl_rank = player_map(player_mapping, df_bwl_rank, "Player Name", "Player ID")
         df_bwl_rank["Bowling Score"] = df_bwl_rank["Bowling_Combined_Score"]
         df_bwl_rank = move_column(df_bwl_rank, "Player Name", 0)

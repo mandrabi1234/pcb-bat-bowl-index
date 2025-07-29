@@ -35,7 +35,6 @@ def data_preprocessing(df):
         "Batters Dismissed": ["*", "N/a", "", "nan", "N0"],
         "Wickets Taken": ["*"],
         "Balls Bowled": ["DNB"],
-        "Dismissed": ["dnb"],
         "Special Batting Talent": ["DNP"],
         "Special Bowling Talent": ["DNP"],
     }
@@ -68,20 +67,31 @@ def data_preprocessing(df):
 
     # Ensure Batters Dismissed is stringified after cleaning
     df["Batters Dismissed"] = df["Batters Dismissed"].astype(str).replace("nan", "0")
+    print(df["Dismissed"].unique())
+    print(df["Balls Bowled"].unique())
 
-    # Dismissed column (YES/NO & dismissal type to 1/0)
+    # Standardize case and strip whitespace
+    df["Dismissed"] = df["Dismissed"].astype(str).str.strip().str.lower()
+
+    # Define lowercased mappings
     dismissed_yes = [
-        "YES", "Yes", "yes", "yes ", "YES ", "YSE", "ye", "y", "Caught", "LBW", "Runout", "Bowled",
-        "LWB", "Hit Wicket", "Cuaght", "Run out"
+        "yes", "yse", "ye", "y", "caught", "lbw", "runout", "run out", "bowled",
+        "lwb", "hit wicket", "cuaght"
     ]
-    dismissed_no = [
-        "no", "NO", "No", "Did not", "Not out", "Retired Hurt", "Absent Hurt", "Did Not Play", "*",
-        "Did Not play", "Did not Play", "DNP", "ABND", "Abandoned", "Retired", "Not Out", "not Out", "DNB"
-    ]
-    df["Dismissed"] = df["Dismissed"].replace(dismissed_yes, 1)
-    df["Dismissed"] = df["Dismissed"].replace(dismissed_no, 0)
-    df["Dismissed"] = df["Dismissed"].fillna(0).astype(float)
 
+    dismissed_no = [
+        "no", "did not", "not out", "retired hurt", "absent hurt", "did not play", "*",
+        "dnp", "abnd", "abandoned", "retired", "dnb", "nan"
+    ]
+
+    # Apply mapping
+    df["Dismissed"] = df["Dismissed"].where(~df["Dismissed"].isin(dismissed_no), 0)
+    df["Dismissed"] = df["Dismissed"].where(~df["Dismissed"].isin(dismissed_yes), 1)
+
+    # Anything else: treat as not dismissed (default to 0)
+    df["Dismissed"] = pd.to_numeric(df["Dismissed"], errors="coerce").fillna(0).astype(int)
+
+    print(df["Dismissed"].unique())
     # Special Batting Talent
     yes_vals = ["YES", "Yes", "yes", "yes "]
     no_vals = ["NO", "No", "no", "N0", ""]
