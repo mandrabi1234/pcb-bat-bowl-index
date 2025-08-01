@@ -70,8 +70,13 @@ config = {
     # Player Averages Constants
     "FACTOR_BATTING_AVG": 1.0,
     "BASELINE_BATTING_AVG": 30,
+    "BATTING_FACTOR_MIN": 0.75,
+    "BATTING_FACTOR_MAX": 1.25,
+
     "FACTOR_BOWLING_AVG": 1.0,
-    "BASELINE_BOWLING_AVG": 25
+    "BASELINE_BOWLING_AVG": 25,
+    "BOWLING_FACTOR_MIN": 0.75,
+    "BOWLING_FACTOR_MAX": 1.25
 
     # # Batting threshold
     # "MIN_RUNS": 200,

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 
-def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_col, player_col, runs_col, dismissed_col, factor_cols, config):
+def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_col, player_col, runs_col, dismissed_col, bat_avg_factor_col, bat_avg_col, bat_avg_min, bat_avg_max, bat_avg_bsln, bat_factor_avg, factor_cols, config):
     """Aggregate the "value of runs" for each player.
 
     Args:
@@ -21,6 +21,7 @@ def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_
             player_col, runs_col (summed), runvalue_col (summed), runvalue_avg_col, run_avg_col
     """
     cols = [col_name for col_name, _ in factor_cols] + [player_col, runs_col, dismissed_col]
+    print(cols)
     df_filtered = df[cols]
     df_filtered[runvalue_col] = df_filtered[runs_col]
 
@@ -43,30 +44,29 @@ def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_
     df_filtered[run_avg_col] = df_filtered[runs_col] / df_filtered[dismissed_col]
 
     # Batting Average = Runs Made / Number of Dismissals
-    df_filtered["Batting_Avg"] = df_filtered[runs_col] / df_filtered[dismissed_col].replace(0, np.nan)
+    df_filtered[bat_avg_col] = df_filtered[runs_col] / df_filtered[dismissed_col].replace(0, np.nan)
 
     # Normalize: lower average = better
     # Debug Notes: 
-    df_filtered["Batting_Avg_Factor"] = df_filtered["Batting_Avg"] / config["BASELINE_BATTING_AVG"]
-    df_filtered["Batting_Avg_Factor"] = df_filtered["Batting_Avg_Factor"].fillna(1.0)
+    df_filtered[bat_avg_factor_col] = df_filtered[bat_avg_col] / bat_avg_bsln
+    df_filtered[bat_avg_factor_col] = df_filtered[bat_avg_factor_col].fillna(1.0)
 
     # Standardization of Values
-    minVal = df_filtered["Batting_Avg_Factor"].min()
-    maxVal = df_filtered["Batting_Avg_Factor"].max()
-    factorMin = 0.75
-    factorMax = 1.25
+    minVal = df_filtered[bat_avg_factor_col].min()
+    maxVal = df_filtered[bat_avg_factor_col].max()
+    factorMin = bat_avg_max
+    factorMax = bat_avg_min
 
-    df_filtered["Batting_Avg_Factor"] = (df_filtered["Batting_Avg_Factor"] - minVal) / (maxVal - minVal) 
-    df_filtered["Batting_Avg_Factor"] = factorMin + (df_filtered["Batting_Avg_Factor"] * (factorMax - factorMin)) 
+    df_filtered[bat_avg_factor_col] = (df_filtered[bat_avg_factor_col] - minVal) / (maxVal - minVal) 
+    df_filtered[bat_avg_factor_col] = factorMin + (df_filtered[bat_avg_factor_col] * (factorMax - factorMin)) 
     
     # Multiply into existing weighted RunsValue
-    df_filtered[runvalue_col] *= df_filtered["Batting_Avg_Factor"] * config["FACTOR_BATTING_AVG"]
+    df_filtered[runvalue_col] *= df_filtered[bat_avg_factor_col] * bat_factor_avg
 
 
     return df_filtered
 
-
-def add_wicketvalues(df, wickets_avg_col, wicketvalue_col, wicketvalue_avg_col, player_col, total_played_col, balls_bowled, wickets_col, runs_given_col, factor_cols, config):
+def add_wicketvalues(df, wickets_avg_col, wicketvalue_col, wicketvalue_avg_col, player_col, total_played_col, balls_bowled, wickets_col, runs_given_col, bwl_avg_factor_col, bwl_avg_col, bwl_avg_min, bwl_avg_max, bwl_avg_bsln, bwl_factor_avg, factor_cols, config):
     """Aggregate the value of wickets for each player and include bowling average."""
     cols = [col_name for col_name, _ in factor_cols] + [player_col, wickets_col, balls_bowled, runs_given_col]
     df_filtered = df[cols].copy()
@@ -88,35 +88,35 @@ def add_wicketvalues(df, wickets_avg_col, wicketvalue_col, wicketvalue_avg_col, 
     df_filtered[wickets_avg_col] = df_filtered[wickets_col] / df_filtered[runs_given_col]
 
     # Bowling Average = Runs Given / Wickets Taken
-    df_filtered["Bowling_Avg"] = df_filtered[runs_given_col] / df_filtered[wickets_col].replace(0, np.nan)
+    df_filtered[bwl_avg_col] = df_filtered[runs_given_col] / df_filtered[wickets_col].replace(0, np.nan)
 
     # Normalize: lower average = better
     
-    df_filtered["Bowling_Avg_Factor"] = config["BASELINE_BOWLING_AVG"] / df_filtered["Bowling_Avg"]
+    df_filtered[bwl_avg_factor_col] = bwl_avg_bsln / df_filtered[bwl_avg_col]
 
-    df_filtered["Bowling_Avg_Factor"].replace([np.inf, -np.inf], 1, inplace=True)
+    df_filtered[bwl_avg_col].replace([np.inf, -np.inf], 1, inplace=True)
 
-    df_filtered["Bowling_Avg_Factor"] = df_filtered["Bowling_Avg_Factor"].fillna(1.0)
+    df_filtered[bwl_avg_factor_col] = df_filtered[bwl_avg_factor_col].fillna(1.0)
 
     # df_filtered["Bowling_Avg_Factor"] = 2.0
-    factorMin = 0.75
-    factorMax = 1.25
-    df_filtered.loc[df_filtered['Bowling_Avg_Factor'] > factorMax, 'Bowling_Avg_Factor'] = factorMax
-    df_filtered.loc[df_filtered['Bowling_Avg_Factor'] < factorMin, 'Bowling_Avg_Factor'] = factorMin
+    # factorMin = 0.75
+    # factorMax = 1.25
+    df_filtered.loc[df_filtered[bwl_avg_factor_col] > bwl_avg_max, bwl_avg_factor_col] = bwl_avg_max
+    df_filtered.loc[df_filtered[bwl_avg_factor_col] < bwl_avg_min, bwl_avg_factor_col] = bwl_avg_min
     
     # Standardize Values
-    minVal = df_filtered["Bowling_Avg_Factor"].min()
+    minVal = df_filtered[bwl_avg_factor_col].min()
     print("--Min Value--\n", minVal)
-    maxVal = df_filtered["Bowling_Avg_Factor"].max()
+    maxVal = df_filtered[bwl_avg_factor_col].max()
     print("--Max Value--\n", maxVal)
 
 
 
-    df_filtered["Bowling_Avg_Factor"] = (df_filtered["Bowling_Avg_Factor"] - minVal) / (maxVal - minVal) 
-    df_filtered["Bowling_Avg_Factor"] = factorMin + (df_filtered["Bowling_Avg_Factor"] * (factorMax - factorMin)) 
+    df_filtered[bwl_avg_factor_col] = (df_filtered[bwl_avg_factor_col] - minVal) / (maxVal - minVal) 
+    df_filtered[bwl_avg_factor_col] = bwl_avg_min + (df_filtered[bwl_avg_factor_col] * (bwl_avg_max - bwl_avg_min)) 
 
 
     # Multiply into existing weighted WicketValue
-    df_filtered[wicketvalue_col] *= df_filtered["Bowling_Avg_Factor"] * config["FACTOR_BOWLING_AVG"]
+    df_filtered[wicketvalue_col] *= df_filtered[bwl_avg_factor_col] * bwl_factor_avg
 
     return df_filtered

@@ -12,7 +12,7 @@ import numpy as np
 from constants_t20 import config as default_config
 import copy
 
-def generate_default_rankings(data_path, mapping_path, format_filter="four_day"):
+def generate_default_rankings(data_path, mapping_path, format_filter="t20"):
     """
     Generate default batting and bowling rankings using preset factor weights.
     
@@ -60,6 +60,12 @@ def generate_default_rankings(data_path, mapping_path, format_filter="four_day")
         rankings_config["PLAYER_ID"], 
         rankings_config["RUNS_MADE"], 
         rankings_config["DISMISSED_COL"], 
+        rankings_config["BATTING_AVG_FACTOR"],
+        rankings_config["BATTING_AVG"],
+        config["BATTING_FACTOR_MIN"],
+        config["BATTING_FACTOR_MAX"],
+        config["BASELINE_BATTING_AVG"],
+        config["FACTOR_BATTING_AVG"],
         batting_factors,
         config
     )
@@ -89,8 +95,14 @@ def generate_default_rankings(data_path, mapping_path, format_filter="four_day")
         rankings_config["BALLS_BOWLED"], 
         rankings_config["WICKETS_COL"],
         rankings_config["RUNS_GIVEN"], 
+        rankings_config["BOWLING_AVG_FACTOR"],
+        rankings_config["BOWLING_AVG"],
+        config["BOWLING_FACTOR_MIN"],
+        config["BOWLING_FACTOR_MAX"],
+        config["BASELINE_BOWLING_AVG"],
+        config["FACTOR_BOWLING_AVG"],     
         bowling_factors,
-        config
+        config  
     )
 
     df_bowl_rank = rank_t20.bowling_rankings(df_bowl_agg, rankings_config["WICKETVALUE_COL"], rankings_config["WICKETVALUE_AVG_COL"])

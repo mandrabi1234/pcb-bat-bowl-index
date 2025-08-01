@@ -7,9 +7,9 @@ enableXsrfProtection = false
 
 [theme]
 base="dark"
-primaryColor="#5a635f"
-backgroundColor="#3eb575"
-secondaryBackgroundColor="#f9f9f9"
-textColor="#12231a"
+primaryColor="#f9f9f9"
+backgroundColor="#004c0c"
+secondaryBackgroundColor="#bababa"
+textColor="#ffffff"
 font="sans serif"
-borderColor = "#1c4432"
+borderColor = "#f9f9f9"

@@ -23,6 +23,11 @@ config = {
     "BATTING_RANKING": "Batting_Ranking",
     "BOWLING_RANKING": "Bowling_Ranking",
 
+    "BOWLING_AVG_FACTOR": "Bowling_Average_Factor",
+    "BATTING_AVG_FACTOR": "Batting_Average_Factor",
+    "BOWLING_AVG": "Bowling_Average",
+    "BATTING_AVG": "Batting_Average",
+
     #######################################
     # T20 Ranking Aggregation Proportions
 

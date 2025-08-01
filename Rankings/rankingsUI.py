@@ -26,6 +26,13 @@ config = copy.deepcopy(default_config)
 
 st.set_page_config(layout="wide")
 
+st.markdown("""
+    <style>
+    section[data-testid="stSidebar"] * {
+        color: black !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 # Set base directory to project root
 BASE_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
@@ -53,8 +60,9 @@ player_mapping = pd.read_csv(mapping_url)
 
 batting_data, bowling_data = generate_default_rankings( df, player_mapping)
 
-print("---Default Batting Rankins First Class---\n", batting_data)
-bowling_data.to_csv(f"DEBUG OUTPUT Bowling.csv", index=False)
+print("---Default Batting Rankings First Class---\n", batting_data)
+bowling_data.to_csv(f"TEST OUTPUT T20 BOWLING 812025.csv", index=False)
+batting_data.to_csv(f"TEST OUTPUT T20 BATTING 812025.csv", index=False)
 
 def move_column(df, col_name, new_index):
     col = df.pop(col_name)
@@ -129,10 +137,12 @@ with st.sidebar:
         with st.expander("Average Factors"):
             config["FACTOR_BATTING_AVG"]= st.slider("Batting Average Factor", 0.0, 2.0, 1.0, .05)
             config["BASELINE_BATTING_AVG"]= st.slider("Baseline Batting Average", 0, 100, 25, 5)
-            rankings_config["T20_BOWLING_RUNSVALUE_TOTAL_PROP"] = st.slider("Total Runs Value Weight", 0, 100, 60, 5)
-            rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"] = 100 - rankings_config["T20_BOWLING_RUNSVALUE_TOTAL_PROP"]
+            config["BATTING_FACTOR_MIN"]= st.slider("Batting Average Factor Min", 0.0, 2.00, 0.75, .05)
+            config["BATTING_FACTOR_MAX"]= st.slider("Batting Average Factor Max", 0.0, 2.00, 1.25, .05)
+            rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"] = st.slider("Total Runs Value Weight", 0, 100, 60, 5)
+            rankings_config["T20_BATTING_RUNSVALUE_AVG_PROP"] = 100 - rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"]
 
-            st.markdown(f"Average Value Runs Weight: **{rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"]}**")
+            st.markdown(f"Average Value Runs Weight: **{rankings_config["T20_BATTING_RUNSVALUE_AVG_PROP"]}**")
 
         with st.expander("Tournament Factors"):
             config["TOURNAMENT_FACTOR_DEFAULT"] = st.slider("Tournament Factor Default", 0.0, 1.0, 1.0, 0.05)
@@ -175,6 +185,8 @@ with st.sidebar:
         with st.expander("Average Factors"):
             config["FACTOR_BOWLING_AVG"]= st.slider("Bowling Average Factor", 0.0, 2.0, 1.0, .05)
             config["BASELINE_BOWLING_AVG"]= st.slider("Baseline Bowling Average", 0, 100, 30, 5)
+            config["BOWLING_FACTOR_MIN"]= st.slider("Bowling Average Factor Min", 0.0, 2.00, 0.75, .05)
+            config["BOWLING_FACTOR_MAX"]= st.slider("Bowling Average Factor Max", 0.0, 2.00, 1.25, .05)
             rankings_config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"] = st.slider("Total Wickets Value Weight", 0, 100, 70, 5)
             rankings_config["T20_BOWLING_WICKETSVALUE_AVG_PROP"] = 100 - rankings_config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"]
 
@@ -228,6 +240,7 @@ batting_factors = [
     (config["FACTOR_SPECIAL_BAT_TALENT"], config["BAT_TALENT_DEFAULT"])
 ]
 
+
 df_bat_agg = agg.add_runvalues(
     df,
     rankings_config["RUN_AVG_COL"], 
@@ -237,6 +250,12 @@ df_bat_agg = agg.add_runvalues(
     rankings_config["PLAYER_ID"], 
     rankings_config["RUNS_MADE"], 
     rankings_config["DISMISSED_COL"],
+    rankings_config["BATTING_AVG_FACTOR"],
+    rankings_config["BATTING_AVG"],
+    config["BATTING_FACTOR_MIN"],
+    config["BATTING_FACTOR_MAX"],
+    config["BASELINE_BATTING_AVG"],
+    config["FACTOR_BATTING_AVG"],
     batting_factors,
     config
 )
@@ -273,7 +292,13 @@ df_bowl_agg = agg.add_wicketvalues(
     rankings_config["BOWLING_INNINGS_PLAYED"],
     rankings_config["BALLS_BOWLED"],
     rankings_config["WICKETS_TAKEN"],
-    rankings_config["RUNS_GIVEN"],       
+    rankings_config["RUNS_GIVEN"], 
+    rankings_config["BOWLING_AVG_FACTOR"],
+    rankings_config["BOWLING_AVG"],
+    config["BOWLING_FACTOR_MIN"],
+    config["BOWLING_FACTOR_MAX"],
+    config["BASELINE_BOWLING_AVG"],
+    config["FACTOR_BOWLING_AVG"],     
     bowling_factors,
     config                               
 )
