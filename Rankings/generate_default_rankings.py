@@ -12,7 +12,7 @@ import numpy as np
 from constants_t20 import config as default_config
 import copy
 
-def generate_default_rankings(data_path, mapping_path, format_filter="t20"):
+def generate_default_rankings(data_path, mapping_path, format_filter="four_day"):
     """
     Generate default batting and bowling rankings using preset factor weights.
     

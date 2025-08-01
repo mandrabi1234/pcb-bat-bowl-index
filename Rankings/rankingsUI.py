@@ -53,6 +53,8 @@ player_mapping = pd.read_csv(mapping_url)
 
 batting_data, bowling_data = generate_default_rankings( df, player_mapping)
 
+print("---Default Batting Rankins First Class---\n", batting_data)
+bowling_data.to_csv(f"DEBUG OUTPUT Bowling.csv", index=False)
 
 def move_column(df, col_name, new_index):
     col = df.pop(col_name)
@@ -238,7 +240,7 @@ df_bat_agg = agg.add_runvalues(
     batting_factors,
     config
 )
-
+print("---Batting Aggregations---\n", df_bat_agg)
 #Bowling Factors Calculations
 
 ## BOWLING
@@ -276,6 +278,7 @@ df_bowl_agg = agg.add_wicketvalues(
     config                               
 )
 
+
 with tab1:
     if 'bat_filtered_outputs' not in st.session_state:
         st.session_state.bat_filtered_outputs = []
@@ -291,7 +294,7 @@ with tab1:
         df_bat_rank["Batting Score"] = df_bat_rank["Batting_Combined_Score"]
         df_bat_rank = move_column(df_bat_rank, "Player Name", 0)
         df_bat_rank = move_column(df_bat_rank, "Player ID", 1)
-
+        print("Final Rankings Output---\n", df_bat_rank)
         if len(st.session_state.bat_filtered_outputs) < 5:
             st.session_state.bat_filtered_outputs.append({
                 'title': f"{title_bat} ({', '.join(format_select)})" or f"Output {len(st.session_state.bat_filtered_outputs) + 1} - {format_select} Data",
