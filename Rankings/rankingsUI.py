@@ -4,7 +4,6 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Factor Calculations')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Rankings')))
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data')))
 
 from constants import *
 from constants_t20 import *
@@ -54,11 +53,7 @@ player_mapping = pd.read_csv(mapping_url)
 
 batting_data, bowling_data = generate_default_rankings( df, player_mapping)
 
-# bowl_data_input = os.path.join(DATA_DIR,"bowl_data.csv")
-# bat_data_input = os.path.join(DATA_DIR,"bat_data.csv")
 
-# batting_data = pd.read_csv(fr"{bat_data_input}")
-# bowling_data = pd.read_csv(fr"{bowl_data_input}")
 def move_column(df, col_name, new_index):
     col = df.pop(col_name)
     df.insert(new_index, col_name, col)
@@ -68,17 +63,9 @@ bowl_data = bowling_data
 bowl_data = move_column(bowl_data, "Player Name", 0)
 bowl_data = move_column(bowl_data, "Player ID", 1)
 
-# bowl_data["Wickets Taken"] = bowling_data["Wickets Taken"]
-# bowl_data["Bowling Score"] = bowling_data["Bowling_Combined_Score"]
-
 bat_data = batting_data
 bat_data = move_column(bat_data, "Player Name", 0)
 bat_data = move_column(bat_data, "Player ID", 1)
-# print("---Bat Data---\n", bat_data)
-# bat_data["Player Name"] = batting_data["Player Name"]
-# bat_data["Player ID "] = batting_data["Player ID"]
-# bat_data["Runs Made"] = batting_data["Runs Made"]
-# bat_data["Batting Score"] = batting_data["Batting_Combined_Score"]
 
 data_preprocessing(df)
 
@@ -88,40 +75,6 @@ def player_map(df_map, df_input, player_name_col, player_id_col):
     df_output = df_input.loc[:, [player_name_col] + [col for col in df_input.columns if col != player_name_col]]
     return df_output
 
-# print("---Dismissal per Player---\n", df.groupby("Player ID")["Dismissed"].sum().reset_index())
-
-
-# def filter_and_calculate_bat(df_input, sr_weight, tournament_weight, opp_weight, bat_pos_weight, spec_bat_talent_weight):
-#     df_input = df_input[df_input["Tournament"].isin(["psl", "champions t20", "national t20"])]
-#     ft20.strike_rate_factor(df_input, "Runs Made", "Balls Consumed", "Strike Rate Factor", sr_weight)
-#     ft20.tournament_calibre_factor(df_input, "Tournament", tournament_weight)
-#     ft20.opp_quality_factor(df_input, "Team Standing", "Opposition Standing", opp_weight)
-#     ft20.batting_position_factor(df_input, "Runs Made", "Batting Position", bat_pos_weight)
-#     ft20.special_bat_talent_factor(df_input, "Special Batting Talent", spec_bat_talent_weight)
-#     batting_factors = [
-#         ("Strike Rate Factor", sr_weight),
-#         ("Tournament Calibre Factor", tournament_weight),
-#         ("Opposition Quality Factor", opp_weight),
-#         ("Batting Position Factor", bat_pos_weight),
-#         ("Special Batting Talent Factor", spec_bat_talent_weight)
-#     ]
-#     df_bat_agg = agg.add_runvalues(df_input, RUN_AVG_COL, RUNVALUE_COL, RUNVALUE_AVG_COL, BATTING_INNINGS_PLAYED,
-#                                    PLAYER_ID, RUNS_MADE, DISMISSED_COL, batting_factors)
-#     df_bat_rank = rank_t20.batting_rankings(df_bat_agg, RUNVALUE_COL, RUNVALUE_AVG_COL)
-#     return player_map(player_mapping, df_bat_rank, "Player Name", "Player ID")
-
-# def filter_and_calculate_bowl(df_input, econ_rate_weight, avg_weight, wkts_weight, spec_bowl_talent_weight):
-#     df_input = df_input[df_input["Tournament"].isin(["psl", "champions t20", "national t20"])]
-#     ft20.special_bat_talent_factor(df_input, "Special Bowling Talent", spec_bowl_talent_weight)
-#     ft20.batters_dismissed_position_factor(df_input, "Wickets Taken", "Batters Dismissed", wkts_weight)
-#     ft20.economy_rate_factor(df_input, "Runs Given", "Balls Bowled", econ_rate_weight)
-#     bowling_factors = [econ_rate_weight, wkts_weight, avg_weight, avg_weight, spec_bowl_talent_weight]
-#     df_bowl_agg = agg.add_wicketvalues(df_input, WICKETS_AVG_COL, WICKETVALUE_COL, WICKETVALUE_AVG_COL, PLAYER_ID,
-#                                        BOWLING_INNINGS_PLAYED, BALLS_BOWLED, WICKETS_COL, bowling_factors)
-#     df_bowl_rank = rank_t20.bowling_rankings(df_bowl_agg, WICKETVALUE_COL, WICKETVALUE_AVG_COL)
-
-
-#     return player_map(player_mapping, df_bowl_rank, "Player Name", "Player ID")
 st.markdown("""
     <style>
     /* Change font size of tab labels */
@@ -178,10 +131,6 @@ with st.sidebar:
             rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"] = 100 - rankings_config["T20_BOWLING_RUNSVALUE_TOTAL_PROP"]
 
             st.markdown(f"Average Value Runs Weight: **{rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"]}**")
-
-            # rankings_config["T20_BOWLING_RUNSVALUE_TOTAL_PROP"]= st.slider("Total Runs Value Weight", 0, 100, 40, 10)
-            # rankings_config["T20_BOWLING_RUNSVALUE_AVG_PROP"]= st.slider("Average Value Runs Weight", 0, 100, 60, 10)
-
 
         with st.expander("Tournament Factors"):
             config["TOURNAMENT_FACTOR_DEFAULT"] = st.slider("Tournament Factor Default", 0.0, 1.0, 1.0, 0.05)
@@ -252,17 +201,6 @@ with st.sidebar:
             rankings_config["T20_WICKETS_MAX_PERCENTILE"] = st.slider("Maximum Wickets Percentile", 0.0, 2.0, 0.95, 0.05)
 
 
-
-
-
-# Special Talents
-# config["BAT_TALENT_DEFAULT"] = bat_talent_special_default
-# config["BAT_TALENT_SPECIAL"] = bat_talent_special
-# config["BOWL_TALENT_DEFAULT"] = bwl_talent_special_default
-# config["BOWL_TALENT_SPECIAL"] = bwl_talent_special
-
-
-
 # Batting Factors Calculations
 
 # Set the SR factor.
@@ -288,17 +226,6 @@ batting_factors = [
     (config["FACTOR_SPECIAL_BAT_TALENT"], config["BAT_TALENT_DEFAULT"])
 ]
 
-
-# batting_factors = [
-#     config["FACTOR_SR"],
-#     config["FACTOR_TOURNAMENT"],
-#     config["FACTOR_OPP_QUALITY"],
-#     config["FACTOR_BAT_POSITION"],
-#     config["FACTOR_SPECIAL_BAT_TALENT"]
-# # ]
-# print("---Batting Factors---\n", batting_factors)
-# print("---DataFrame---\n", df)
-# print("---Dismissal per Player---\n", df.groupby("Player Name")["Dismissed"].sum().reset_index())
 df_bat_agg = agg.add_runvalues(
     df,
     rankings_config["RUN_AVG_COL"], 
@@ -311,14 +238,6 @@ df_bat_agg = agg.add_runvalues(
     batting_factors,
     config
 )
-
-# # Batting Average Factor
-# df_bat_agg["Batting_Avg_Factor"] = df_bat_agg[rankings_config["RUN_AVG_COL"]] / config["BASELINE_BATTING_AVG"]
-# print("--BATTING AVERAGE CHECK")
-# print(df_bat_agg["Batting_Avg_Factor"])
-# df_bat_agg["Batting_Avg_Factor"] = df_bat_agg["Batting_Avg_Factor"].fillna(1.0)
-# df_bat_agg[rankings_config["RUNVALUE_COL"]] *= df_bat_agg["Batting_Avg_Factor"] * config["FACTOR_BATTING_AVG"]
-
 
 #Bowling Factors Calculations
 
@@ -352,16 +271,10 @@ df_bowl_agg = agg.add_wicketvalues(
     rankings_config["BOWLING_INNINGS_PLAYED"],
     rankings_config["BALLS_BOWLED"],
     rankings_config["WICKETS_TAKEN"],
-    rankings_config["RUNS_GIVEN"],       # 🆕 New input column
+    rankings_config["RUNS_GIVEN"],       
     bowling_factors,
-    config                               # 🆕 Pass entire config for factor use
+    config                               
 )
-
-# print(df_bowl_agg)
-
-# Bowling Rankings
-
-
 
 with tab1:
     if 'bat_filtered_outputs' not in st.session_state:
@@ -378,9 +291,7 @@ with tab1:
         df_bat_rank["Batting Score"] = df_bat_rank["Batting_Combined_Score"]
         df_bat_rank = move_column(df_bat_rank, "Player Name", 0)
         df_bat_rank = move_column(df_bat_rank, "Player ID", 1)
-        # df_bat_rank = df_bat_rank.drop("Dismissed", axis=1)
 
-        # df_bat_rank = df_bat_rank[['Player Name', 'Player ID', 'Runs Made',  'Batting Score']]
         if len(st.session_state.bat_filtered_outputs) < 5:
             st.session_state.bat_filtered_outputs.append({
                 'title': f"{title_bat} ({', '.join(format_select)})" or f"Output {len(st.session_state.bat_filtered_outputs) + 1} - {format_select} Data",
@@ -414,7 +325,6 @@ with tab2:
         df_bwl_rank["Bowling Score"] = df_bwl_rank["Bowling_Combined_Score"]
         df_bwl_rank = move_column(df_bwl_rank, "Player Name", 0)
         df_bwl_rank = move_column(df_bwl_rank, "Player ID", 1)
-        # df_bwl_rank = df_bwl_rank[['Player Name', 'Player ID', 'Wickets Taken', 'Bowling Score']]
 
         if len(st.session_state.bowl_filtered_outputs) < 5:
             st.session_state.bowl_filtered_outputs.append({
