@@ -64,14 +64,6 @@ def generate_default_rankings(data_path, mapping_path, format_filter="t20"):
         config
     )
 
-    # # 🔥 Batting Average Factor = (Run Avg / Baseline)
-    # df_bat_agg["Batting_Avg_Factor"] = df_bat_agg[rankings_config["RUN_AVG_COL"]] / config["BASELINE_BATTING_AVG"]
-    # df_bat_agg["Batting_Avg_Factor"] = df_bat_agg["Batting_Avg_Factor"].fillna(1.0)
-
-    # # Apply weight
-    # df_bat_agg[rankings_config["RUNVALUE_COL"]] *= df_bat_agg["Batting_Avg_Factor"] * config["FACTOR_BATTING_AVG"]
-
-
     df_bat_rank = rank_t20.batting_rankings(df_bat_agg, rankings_config["RUNVALUE_COL"], rankings_config["RUNVALUE_AVG_COL"])
 
     # --- Bowling Factors ---
