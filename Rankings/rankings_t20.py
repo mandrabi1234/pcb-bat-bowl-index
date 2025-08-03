@@ -57,7 +57,7 @@ def bowling_rankings(df, wickets_col, wickets_avg_col):
 
     new_col_suffix = "_normed"
     new_wick_col = wickets_col + new_col_suffix
-    new_wick_avg_col = wickets_avg_col + new_col_suffix
+    # new_wick_avg_col = wickets_avg_col + new_col_suffix
 
     df_filtered = df[
         df[rankings_config["BOWLING_INNINGS_PLAYED"]]  # pull the column first
@@ -69,15 +69,30 @@ def bowling_rankings(df, wickets_col, wickets_avg_col):
         df_filtered, wickets_col, new_wick_col, rankings_config["T20_WICKETS_MIN_PERCENTILE"], rankings_config["T20_WICKETS_MAX_PERCENTILE"])
     
     # Standardize WicketValues_AVG
-    df_filtered = standardize_vals(
-        df_filtered, wickets_avg_col, new_wick_avg_col, rankings_config["T20_WICKETS_MIN_PERCENTILE"], rankings_config["T20_WICKETS_MAX_PERCENTILE"])
+    # df_filtered = standardize_vals(
+    #     df_filtered, wickets_avg_col, new_wick_avg_col, rankings_config["T20_WICKETS_MIN_PERCENTILE"], rankings_config["T20_WICKETS_MAX_PERCENTILE"])
     
     # Combine.
     df_filtered[rankings_config["BOWLING_COMBINED_SCORE"]] = (
-        (rankings_config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"] * df_filtered[new_wick_col]) +
-        (rankings_config["T20_BOWLING_WICKETSVALUE_AVG_PROP"] * df_filtered[new_wick_avg_col])
+        (rankings_config["T20_BOWLING_WICKETSVALUE_TOTAL_PROP"] * df_filtered[new_wick_col])
+        # (rankings_config["T20_BOWLING_WICKETSVALUE_AVG_PROP"] * df_filtered[new_wick_avg_col])
     )
 
-    df_filtered[rankings_config["BOWLING_RANKING"]] = df_filtered[rankings_config["BOWLING_COMBINED_SCORE"]].rank(method='dense', ascending=False)
+    df_filtered = df_filtered.sort_values(rankings_config["BOWLING_COMBINED_SCORE"], ascending=False)
+
+    # Optional tiebreak: sort secondarily by WicketValues
+    df_filtered = df_filtered.sort_values(
+        by=[rankings_config["BOWLING_COMBINED_SCORE"], rankings_config["WICKETVALUE_COL"]],
+        ascending=[False, False]
+    )
+
+    df_filtered[rankings_config["BOWLING_RANKING"]] = np.arange(1, len(df_filtered) + 1)
     df_filtered = df_filtered.set_index(rankings_config["BOWLING_RANKING"]).sort_index()
+
+
+    # df_filtered = df_filtered.sort_values(rankings_config["BOWLING_COMBINED_SCORE"], ascending=False)
+    # df_filtered[rankings_config["BOWLING_RANKING"]] = np.arange(1, len(df_filtered) + 1)
+
+    # df_filtered[rankings_config["BOWLING_RANKING"]] = df_filtered[rankings_config["BOWLING_COMBINED_SCORE"]].rank(method='dense', ascending=False)
+    # df_filtered = df_filtered.set_index(rankings_config["BOWLING_RANKING"]).sort_index()
     return df_filtered

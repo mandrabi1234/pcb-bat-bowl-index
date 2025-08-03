@@ -51,6 +51,9 @@ for i in range(len(gids)):
 
 df = pd.concat(dfs, ignore_index=True)
 
+df_default = pd.concat(dfs, ignore_index=True)
+
+
 print(df['Format'].unique())
 
 mapping_url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=csv&gid=1945069261"
@@ -58,24 +61,17 @@ mapping_url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?f
 player_mapping = pd.read_csv(mapping_url)
 # Load data
 
-batting_data, bowling_data = generate_default_rankings( df, player_mapping)
+# batting_data, bowling_data = generate_default_rankings( df, player_mapping)
 
-print("---Default Batting Rankings First Class---\n", batting_data)
-bowling_data.to_csv(f"TEST OUTPUT T20 BOWLING 812025.csv", index=False)
-batting_data.to_csv(f"TEST OUTPUT T20 BATTING 812025.csv", index=False)
+# print("---Default Batting Rankings First Class---\n", batting_data)
+# bowling_data.to_csv(f"TEST OUTPUT T20 BOWLING 822025.csv", index=False)
+# batting_data.to_csv(f"TEST OUTPUT T20 BATTING 822025.csv", index=False)
 
 def move_column(df, col_name, new_index):
     col = df.pop(col_name)
     df.insert(new_index, col_name, col)
     return df
 
-bowl_data = bowling_data
-bowl_data = move_column(bowl_data, "Player Name", 0)
-bowl_data = move_column(bowl_data, "Player ID", 1)
-
-bat_data = batting_data
-bat_data = move_column(bat_data, "Player Name", 0)
-bat_data = move_column(bat_data, "Player ID", 1)
 
 data_preprocessing(df)
 
@@ -120,6 +116,42 @@ with st.sidebar:
 
     # Normalize format selections
     selected_formats = [format_map[fmt] for fmt in format_select if fmt in format_map]
+    # # Apply format-specific minimums and top filters
+    # format_minimums = {
+    #     "t20": {"min_runs": 107, "min_wkts": 7, "top_bat": 60, "top_bowl": 60},
+    #     "one_day": {"min_runs": 100, "min_wkts": 4, "top_bat": 50, "top_bowl": 50},
+    #     "four_day": {"min_runs": 230, "min_wkts": 11, "top_bat": 100, "top_bowl": 80},
+    # }
+
+    # # Loop through each selected format and collect qualifying Player IDs
+    # top_player_ids = set()
+    # for fmt in selected_formats:
+    #     thresholds = format_minimums.get(fmt, {})
+    #     fmt_df = df[df["Format"] == fmt]
+
+    #     top_bat_ids = (
+    #         fmt_df.groupby("Player ID")["Runs Made"]
+    #         .sum()
+    #         .loc[lambda s: s >= thresholds["min_runs"]]
+    #         .sort_values(ascending=False)
+    #         .head(thresholds["top_bat"])
+    #         .index
+    #     )
+
+    #     top_bowl_ids = (
+    #         fmt_df.groupby("Player ID")["Wickets Taken"]
+    #         .sum()
+    #         .loc[lambda s: s >= thresholds["min_wkts"]]
+    #         .sort_values(ascending=False)
+    #         .head(thresholds["top_bowl"])
+    #         .index
+    #     )
+
+    #     top_player_ids.update(set(top_bat_ids).union(set(top_bowl_ids)))
+
+    # # Final filter: keep only rows where Player ID is in top list
+    # df = df[df["Player ID"].isin(top_player_ids)].copy()
+    # print(df)
     
     # Ensure the data is normalized and filtered
     df["Format"] = df["Format"].str.lower()
@@ -214,8 +246,57 @@ with st.sidebar:
             rankings_config["T20_WICKETS_MIN_PERCENTILE"] = st.slider("Minimum Wickets Percentile", 0.0, 2.0, 0.2, 0.05)
             rankings_config["T20_WICKETS_MAX_PERCENTILE"] = st.slider("Maximum Wickets Percentile", 0.0, 2.0, 0.95, 0.05)
 
+format_minimums = {
+        "t20": {"min_runs": 107, "min_wkts": 7, "top_bat": 60, "top_bowl": 60},
+        "one_day": {"min_runs": 100, "min_wkts": 4, "top_bat": 50, "top_bowl": 50},
+        "four_day": {"min_runs": 230, "min_wkts": 11, "top_bat": 100, "top_bowl": 80},
+}
+
+    # Loop through each selected format and collect qualifying Player IDs
+top_player_ids = set()
+for fmt in selected_formats:
+    thresholds = format_minimums.get(fmt, {})
+    fmt_df = df[df["Format"] == fmt]
+
+    top_bat_ids = (
+        fmt_df.groupby("Player ID")["Runs Made"]
+        .sum()
+        .loc[lambda s: s >= thresholds["min_runs"]]
+        .sort_values(ascending=False)
+        .head(thresholds["top_bat"])
+        .index
+    )
+
+    top_bowl_ids = (
+        fmt_df.groupby("Player ID")["Wickets Taken"]
+        .sum()
+        .loc[lambda s: s >= thresholds["min_wkts"]]
+        .sort_values(ascending=False)
+        .head(thresholds["top_bowl"])
+        .index
+    )
+
+    top_player_ids.update(set(top_bat_ids).union(set(top_bowl_ids)))
+
+    # Final filter: keep only rows where Player ID is in top list
+df = df[df["Player ID"].isin(top_player_ids)].copy()
+# print(df[])
 
 # Batting Factors Calculations
+batting_data, bowling_data = generate_default_rankings(df_default, player_mapping)
+
+print("---Default Batting Rankings First Class---\n", batting_data)
+bowling_data.to_csv(f"TEST OUTPUT T20 BOWLING 822025.csv", index=False)
+batting_data.to_csv(f"TEST OUTPUT T20 BATTING 822025.csv", index=False)
+
+bowl_data = bowling_data
+bowl_data = move_column(bowl_data, "Player Name", 0)
+bowl_data = move_column(bowl_data, "Player ID", 1)
+
+bat_data = batting_data
+bat_data = move_column(bat_data, "Player Name", 0)
+bat_data = move_column(bat_data, "Player ID", 1)
+
 
 # Set the SR factor.
 ft20.strike_rate_factor(df, "Runs Made", "Balls Consumed", config["FACTOR_SR"], config)
@@ -302,6 +383,47 @@ df_bowl_agg = agg.add_wicketvalues(
     bowling_factors,
     config                               
 )
+# Reattach 'Format' to aggregated batting and bowling data
+format_lookup = df[["Player ID", "Format"]].drop_duplicates(subset="Player ID")
+
+df_bat_agg = pd.merge(df_bat_agg, format_lookup, on="Player ID", how="left")
+df_bowl_agg = pd.merge(df_bowl_agg, format_lookup, on="Player ID", how="left")
+
+# Re-filter the aggregated batting and bowling data based on format-specific thresholds
+
+bat_agg_filtered = []
+bowl_agg_filtered = []
+
+for fmt in selected_formats:
+    thresholds = format_minimums.get(fmt, {})
+    
+    # Filter batting data for this format
+    fmt_bat = df_bat_agg[df_bat_agg["Format"] == fmt]
+    qualified_bat_ids = (
+        fmt_bat.groupby("Player ID")["Runs Made"]
+        .sum()
+        .loc[lambda s: s >= thresholds["min_runs"]]
+        .sort_values(ascending=False)
+        .head(thresholds["top_bat"])
+        .index
+    )
+    bat_agg_filtered.append(fmt_bat[fmt_bat["Player ID"].isin(qualified_bat_ids)])
+
+    # Filter bowling data for this format
+    fmt_bowl = df_bowl_agg[df_bowl_agg["Format"] == fmt]
+    qualified_bowl_ids = (
+        fmt_bowl.groupby("Player ID")["Wickets Taken"]
+        .sum()
+        .loc[lambda s: s >= thresholds["min_wkts"]]
+        .sort_values(ascending=False)
+        .head(thresholds["top_bowl"])
+        .index
+    )
+    bowl_agg_filtered.append(fmt_bowl[fmt_bowl["Player ID"].isin(qualified_bowl_ids)])
+
+# Concatenate filtered results back into main DataFrames
+df_bat_agg = pd.concat(bat_agg_filtered, ignore_index=True)
+df_bowl_agg = pd.concat(bowl_agg_filtered, ignore_index=True)
 
 
 with tab1:
@@ -316,9 +438,22 @@ with tab1:
             rankings_config["RUNVALUE_AVG_COL"]
         )
         df_bat_rank = player_map(player_mapping, df_bat_rank, "Player Name", "Player ID")
-        df_bat_rank["Batting Score"] = df_bat_rank["Batting_Combined_Score"]
+        # df_bat_rank["Batting Score"] = df_bat_rank["Batting_Combined_Score"]
         df_bat_rank = move_column(df_bat_rank, "Player Name", 0)
         df_bat_rank = move_column(df_bat_rank, "Player ID", 1)
+        # df_at_rank["Batting Score Raw"] = df_bat_rank["Batting_Combined_Score"]
+        max_score = df_bat_rank["Batting_Combined_Score"].max()
+        df_bat_rank["Batting Score (Scaled 100)"] = (df_bat_rank["Batting_Combined_Score"] / max_score) * 100
+
+
+        #     # 1. Top 50 Run Scorers
+        # df_bat_rank = (
+        #     df_bat_rank.groupby("Player ID")["Runs Made"]
+        #     .sum()
+        #     .sort_values(ascending=False)
+        #     .head(50)
+        #     .reset_index()
+        # )
         print("Final Rankings Output---\n", df_bat_rank)
         if len(st.session_state.bat_filtered_outputs) < 5:
             st.session_state.bat_filtered_outputs.append({
@@ -330,6 +465,13 @@ with tab1:
 
     # Display outputs side by side
     with st.expander("Default Rankings", expanded=True):
+        # bat_data = (
+        #     bat_data.groupby("Player ID")["Runs Made"]
+        #     .sum()
+        #     .sort_values(ascending=False)
+        #     .head(50)
+        #     .reset_index()
+        # )
         st.dataframe(bat_data)
 
     with st.container():
@@ -350,10 +492,28 @@ with tab2:
         )
         # print(df_bwl_rank)
         df_bwl_rank = player_map(player_mapping, df_bwl_rank, "Player Name", "Player ID")
-        df_bwl_rank["Bowling Score"] = df_bwl_rank["Bowling_Combined_Score"]
+        # df_bwl_rank["Bowling Score"] = df_bwl_rank["Bowling_Combined_Score"]
         df_bwl_rank = move_column(df_bwl_rank, "Player Name", 0)
         df_bwl_rank = move_column(df_bwl_rank, "Player ID", 1)
+        # df_bwl_rank["Bowling Score Raw"] = df_bwl_rank["Bowling_Combined_Score"]
+        # max_score = df_bwl_rank["Bowling_Combined_Score"].max()
+        # df_bwl_rank["Bowling Score"] = (df_bwl_rank["Bowling_Combined_Score"] / max_score) * 100
 
+        # df_bwl_rank["Bowling Score"] = df_bwl_rank["Bowling_Combined_Score"]
+        max_score = df_bwl_rank["Bowling_Combined_Score"].max()
+        if max_score > 0:
+            df_bwl_rank["Bowling Score (Scaled 100)"] = (df_bwl_rank["Bowling_Combined_Score"] / max_score) * 100
+        else:
+            df_bwl_rank["Bowling Score (Scaled 100)"] = 0
+
+            # 2. Top 50 Wicket Takers
+        # df_bwl_rank = (
+        #     df_bwl_rank.groupby("Player ID")["Wickets Taken"]
+        #     .sum()
+        #     .sort_values(ascending=False)
+        #     .head(50)
+        #     .reset_index()
+        # )
         if len(st.session_state.bowl_filtered_outputs) < 5:
             st.session_state.bowl_filtered_outputs.append({
                 'title': f"{title_bat} ({', '.join(format_select)})" or f"Output {len(st.session_state.bowl_filtered_outputs) + 1} - {format_select} Data",
@@ -364,6 +524,14 @@ with tab2:
 
     # Display outputs side by side
     with st.expander("Default Rankings", expanded=True):
+        # bowl_data = (
+        #     bowl_data.groupby("Player ID")["Wickets Taken"]
+        #     .sum()
+        #     .sort_values(ascending=False)
+        #     .head(50)
+        #     .reset_index()
+        # )
+        print(len(bowl_data))
         st.dataframe(bowl_data)
     
     with st.container():
