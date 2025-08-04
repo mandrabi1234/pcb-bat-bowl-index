@@ -54,8 +54,8 @@ def add_runvalues(df, run_avg_col, runvalue_col, runvalue_avg_col, total_played_
     # Standardization of Values
     minVal = df_filtered[bat_avg_factor_col].min()
     maxVal = df_filtered[bat_avg_factor_col].max()
-    factorMin = bat_avg_max
-    factorMax = bat_avg_min
+    factorMin = bat_avg_min
+    factorMax = bat_avg_max
 
     df_filtered[bat_avg_factor_col] = (df_filtered[bat_avg_factor_col] - minVal) / (maxVal - minVal) 
     df_filtered[bat_avg_factor_col] = factorMin + (df_filtered[bat_avg_factor_col] * (factorMax - factorMin)) 

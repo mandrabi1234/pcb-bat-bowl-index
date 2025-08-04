@@ -93,14 +93,14 @@ def batters_dismissed_position_factor(df, wickets_taken_col, batter_pos_col, bat
     # Create a default column for Batters Dismissed Factor
     df[batter_pos_dismissed_factor_col] = config["WICKET_BAT_POS_DEFAULT"] 
 
-    # Apply factors based on batting position
-    df[batter_pos_dismissed_factor_col] = np.where(
-        df[wickets_taken_col] > 0,
-        df[batter_pos_col].apply(
-            lambda x: sum(config["WICKET_BAT_POS_FACTOR_DICT"][int(float(i))] for i in x.split(','))
-            )/df[wickets_taken_col],
-        config["WICKET_BAT_POS_DEFAULT"]
-    )
+    # # Apply factors based on batting position
+    # df[batter_pos_dismissed_factor_col] = np.where(
+    #     df[wickets_taken_col] > 0,
+    #     df[batter_pos_col].apply(
+    #         lambda x: sum(config["WICKET_BAT_POS_FACTOR_DICT"][int(float(i))] for i in x.split(','))
+    #         )/df[wickets_taken_col],
+    #     config["WICKET_BAT_POS_DEFAULT"]
+    # )
 
 
 # Compute the Economy Rate Factor for each (player, match, innings).
