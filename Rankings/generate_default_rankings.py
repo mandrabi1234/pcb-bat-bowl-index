@@ -9,10 +9,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-from constants_t20 import config as default_config
+from constants_t20 import config as full_config
 import copy
 
-def generate_default_rankings(data_path, mapping_path, format_filter="t20"):
+def generate_default_rankings(data_path, mapping_path, format_filter):
     """
     Generate default batting and bowling rankings using preset factor weights.
     
@@ -24,7 +24,19 @@ def generate_default_rankings(data_path, mapping_path, format_filter="t20"):
     Returns:
         Tuple[pd.DataFrame, pd.DataFrame]: (batting_rankings_df, bowling_rankings_df)
     """
-    config = copy.deepcopy(default_config)
+    # Normalize format_filter to a list
+    if isinstance(format_filter, str):
+        format_filter = [format_filter]
+
+    # Determine config format
+    if len(format_filter) == 1 and format_filter[0].lower() in full_config:
+        selected_format = format_filter[0].lower()
+        print(selected_format)
+    else:
+        selected_format = "t20"  # default fallback for multiple or unknown
+
+    config = copy.deepcopy(full_config[selected_format])
+    print("-------------CONFIG OUTPUT DEFAULT-------------\n", config)
     
     # Load and clean
     df = data_path
@@ -32,7 +44,7 @@ def generate_default_rankings(data_path, mapping_path, format_filter="t20"):
     data_preprocessing(df)
 
     # Filter by match format
-    df = df[df["Format"].str.lower() == format_filter.lower()]
+    df = df[df["Format"].str.lower().isin([fmt.lower() for fmt in format_filter])]
 
     # Loop through each selected format and collect qualifying Player IDs
     top_player_ids = set()
@@ -93,7 +105,7 @@ def generate_default_rankings(data_path, mapping_path, format_filter="t20"):
         config["BATTING_FACTOR_MIN"],
         config["BATTING_FACTOR_MAX"],
         config["BASELINE_BATTING_AVG"],
-        config["FACTOR_BATTING_AVG"],
+        config["BATTING_AVG_FACTOR"],
         batting_factors,
         config
     )
@@ -153,7 +165,7 @@ def generate_default_rankings(data_path, mapping_path, format_filter="t20"):
         config["BOWLING_FACTOR_MIN"],
         config["BOWLING_FACTOR_MAX"],
         config["BASELINE_BOWLING_AVG"],
-        config["FACTOR_BOWLING_AVG"],     
+        config["BOWLING_AVG_FACTOR"],     
         bowling_factors,
         config  
     )
