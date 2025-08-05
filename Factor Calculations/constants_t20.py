@@ -10,7 +10,7 @@ config = {
     "FACTOR_ECON_RATE": "Factor_Wickets_Economy_rate",
 
     "SR_FACTOR_DEFAULT": 1.0,
-    "SR_BASELINE": 1.0,
+    "SR_BASELINE": 1.35,
     "SR_RANGE_MIN": 0.99,
     "SR_RANGE_MAX": 1.0,
     "SR_FACTOR_MIN": 0.99,
@@ -39,7 +39,7 @@ config = {
 
     "OPP_QUALITY_FACTOR_DEFAULT": 1.0,
     "OPP_QUALITY_RANKING_MAX_DIFF": 10.0,
-    "OPP_QUALITY_FACTOR_MIN": 1.0,
+    "OPP_QUALITY_FACTOR_MIN": 0.99,
     "OPP_QUALITY_FACTOR_MAX": 1.0,
 
     "BATTING_POS_DEFAULT": 1.0,
@@ -55,7 +55,7 @@ config = {
     },
 
     "ECON_RATE_FACTOR_DEFAULT": 1.0,
-    "ECON_RATE_BASELINE": 1.0,
+    "ECON_RATE_BASELINE": 1.35,
     "ECON_RATE_RANGE_MIN": 0.99,
     "ECON_RATE_RANGE_MAX": 1.0,
     "ECON_RATE_FACTOR_MIN": 0.99,
@@ -122,7 +122,7 @@ config = {
     },
 
     "ECON_RATE_FACTOR_DEFAULT": 1.0,
-    "ECON_RATE_BASELINE": 1.0,
+    "ECON_RATE_BASELINE": 0.90,
     "ECON_RATE_RANGE_MIN": 0.99,
     "ECON_RATE_RANGE_MAX": 1.0,
     "ECON_RATE_FACTOR_MIN": 0.99,
@@ -189,7 +189,7 @@ config = {
     },
 
     "ECON_RATE_FACTOR_DEFAULT": 1.0,
-    "ECON_RATE_BASELINE": 1.0,
+    "ECON_RATE_BASELINE": 0.6,
     "ECON_RATE_RANGE_MIN": 0.99,
     "ECON_RATE_RANGE_MAX": 1.0,
     "ECON_RATE_FACTOR_MIN": 0.99,
