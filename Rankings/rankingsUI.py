@@ -134,24 +134,24 @@ with st.sidebar:
     with st.sidebar.container():
         st.subheader("Batting Factors")
         with st.expander("Strike Rate"):
-            config["SR_FACTOR_DEFAULT"] = st.slider("Strike Rate Default", 0.0, 1.0, config["SR_FACTOR_DEFAULT"], 0.0001)
-            config["SR_BASELINE"] = st.slider("Strike Rate Baseline", 0.0, 2.0, config["SR_BASELINE"], 0.0001)
-            config["SR_RANGE_MIN"] = st.slider("Strike Rate Range Minimum", 0.0, 1.0, config["SR_RANGE_MIN"], 0.0001)
-            config["SR_RANGE_MAX"] = st.slider("Strike Rate Range Maximum", 0.0, 3.0, config["SR_RANGE_MAX"], 0.0001)
-            config["SR_FACTOR_MIN"] = st.slider("Strike Rate Factor Minimum", 0.0, 1.0, config["SR_FACTOR_MIN"], 0.0001)
-            config["SR_FACTOR_MAX"] = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, config["SR_FACTOR_MAX"], 0.0001)
+            config["SR_FACTOR_DEFAULT"] = st.slider("Strike Rate Default", 0.0, 1.0, config["SR_FACTOR_DEFAULT"], 0.0001, format="%.4f")
+            config["SR_BASELINE"] = st.slider("Strike Rate Baseline", 0.0, 2.0, config["SR_BASELINE"], 0.0001, format="%.4f")
+            config["SR_RANGE_MIN"] = st.slider("Strike Rate Range Minimum", 0.0, 1.0, config["SR_RANGE_MIN"], 0.0001, format="%.4f")
+            config["SR_RANGE_MAX"] = st.slider("Strike Rate Range Maximum", 0.0, 3.0, config["SR_RANGE_MAX"], 0.0001, format="%.4f")
+            config["SR_FACTOR_MIN"] = st.slider("Strike Rate Factor Minimum", 0.0, 1.0, config["SR_FACTOR_MIN"], 0.0001, format="%.4f")
+            config["SR_FACTOR_MAX"] = st.slider("Strike Rate Factor Maximum", 0.0, 2.0, config["SR_FACTOR_MAX"], 0.0001, format="%.4f")
         with st.expander("Average Factors"):
-            config["BATTING_AVG_FACTOR"]= st.slider("Batting Average Factor", 0.0, 2.0, config["BATTING_AVG_FACTOR"], 0.0001)
-            config["BASELINE_BATTING_AVG"]= st.slider("Baseline Batting Average", 0.0, 100.0, config["BASELINE_BATTING_AVG"], 5.0)
-            config["BATTING_FACTOR_MIN"]= st.slider("Batting Average Factor Min", 0.0, 2.00, config["BATTING_FACTOR_MIN"], 0.0001)
-            config["BATTING_FACTOR_MAX"]= st.slider("Batting Average Factor Max", 0.0, 2.00, config["BATTING_FACTOR_MAX"], 0.0001)
-            rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"] = st.slider("Total Runs Value Weight", 0.0, 100.0, rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"], 5.0)
+            config["BATTING_AVG_FACTOR"]= st.slider("Batting Average Factor", 0.0, 2.0, config["BATTING_AVG_FACTOR"], 0.0001, format="%.4f")
+            config["BASELINE_BATTING_AVG"]= st.slider("Baseline Batting Average", 0.0, 100.0, config["BASELINE_BATTING_AVG"], 5.0, format="%.4f")
+            config["BATTING_FACTOR_MIN"]= st.slider("Batting Average Factor Min", 0.0, 2.00, config["BATTING_FACTOR_MIN"], 0.0001, format="%.4f")
+            config["BATTING_FACTOR_MAX"]= st.slider("Batting Average Factor Max", 0.0, 2.00, config["BATTING_FACTOR_MAX"], 0.0001, format="%.4f")
+            rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"] = st.slider("Total Runs Value Weight", 0.0, 100.0, rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"], 5.0, format="%.4f")
             rankings_config["T20_BATTING_RUNSVALUE_AVG_PROP"] = 100.0 - rankings_config["T20_BATTING_RUNSVALUE_TOTAL_PROP"]
 
             st.markdown(f"Average Value Runs Weight: **{rankings_config["T20_BATTING_RUNSVALUE_AVG_PROP"]}**")
 
         with st.expander("Tournament Factors"):
-            config["TOURNAMENT_FACTOR_DEFAULT"] = st.slider("Tournament Factor Default", 0.0, 2.0, config["TOURNAMENT_FACTOR_DEFAULT"], 0.0001)
+            config["TOURNAMENT_FACTOR_DEFAULT"] = st.slider("Tournament Factor Default", 0.0, 2.0, config["TOURNAMENT_FACTOR_DEFAULT"], 0.0001, format="%.4f")
             
             tournament_dict = config.get("TOURNAMENT_FACTOR_DICT", {})
             for tournament, default_val in tournament_dict.items():
