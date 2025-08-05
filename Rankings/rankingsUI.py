@@ -423,6 +423,7 @@ with tab1:
         df_bat_rank = move_column(df_bat_rank, "Player ID", 1)
         max_score = df_bat_rank["Batting_Combined_Score"].max()
         df_bat_rank["Batting Score (Scaled 100)"] = (df_bat_rank["Batting_Combined_Score"] / max_score) * 100
+        df_bat_rank = df_bat_rank.drop('Format', axis=1)
 
 
         print("Final Rankings Output---\n", df_bat_rank)
@@ -435,8 +436,8 @@ with tab1:
             st.warning("You can only store up to 5 filtered outputs.")
 
     # Display outputs side by side
-    with st.expander(f"Default Rankings({', '.join(format_select)})", expanded=True):
-
+    with st.expander(f"Default Rankings ({', '.join(format_select)})", expanded=True):
+        bat_data = bat_data.drop('Format', axis=1)
         st.dataframe(bat_data)
 
     with st.container():
@@ -466,6 +467,7 @@ with tab2:
         else:
             df_bwl_rank["Bowling Score (Scaled 100)"] = 0
 
+        df_bwl_rank = df_bwl_rank.drop('Format', axis=1)
         if len(st.session_state.bowl_filtered_outputs) < 5:
             st.session_state.bowl_filtered_outputs.append({
                 'title': f"{title_bat} ({', '.join(format_select)})" or f"Output {len(st.session_state.bowl_filtered_outputs) + 1} - {format_select} Data",
@@ -475,7 +477,8 @@ with tab2:
             st.warning("You can only store up to 5 filtered outputs.")
 
     # Display outputs side by side
-    with st.expander(f"Default Rankings({', '.join(format_select)})", expanded=True):
+    with st.expander(f"Default Rankings ({', '.join(format_select)})", expanded=True):
+        bowl_data = bowl_data.drop('Format', axis=1)
 
         print(len(bowl_data))
         st.dataframe(bowl_data)
